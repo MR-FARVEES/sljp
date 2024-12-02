@@ -44,7 +44,7 @@ class Controller {
         return isset($_SESSION['logged']) && $_SESSION['logged'] == true;
     }
 
-    public function loginUser($id, $fname, $lname, $email, $gender, $role, $contact, $nic) {
+    public function loginUser($id, $fname, $lname, $email, $gender, $role, $contact, $nic, $profile) {
         $_SESSION['logged'] = true;
         $_SESSION['id'] = $id;
         $_SESSION['fname'] = $fname;
@@ -54,6 +54,15 @@ class Controller {
         $_SESSION['role'] = $role;
         $_SESSION['contact'] = $contact;
         $_SESSION['nic'] = $nic;
+        $_SESSION['profile'] = $profile;
+
+        if ($role == 'admin') {
+            $this->redirect("/admin");
+        } else if ($role == "seeker") {
+            $this->redirect("/seeker");
+        } else if ($role == "provider") {
+            $this->redirect("/provider");
+        }
     }
 
     public function logoutUser() {
@@ -66,6 +75,8 @@ class Controller {
         unset($_SESSION['gender']);
         unset($_SESSION['contact']);
         unset($_SESSION['nic']);
+
+        $this->redirect("/login");
     }
 
     public function redirect($path) {

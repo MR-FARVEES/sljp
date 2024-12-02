@@ -7,20 +7,20 @@
                     <h2 class="card-title text-center fs-5"><strong>Create a New Account</strong></h2>
                     <p class="card-text text-center fs-6">It's quick and easy.</p>
                     <hr>
-                    <form action="/register" method="post">
+                    <form action="/register" method="post" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
                                             <input type="text" class="form-control" id="firstName"
-                                                placeholder="First name" required>
+                                                placeholder="First name" name="first" required>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="mb-3">
                                             <input type="text" class="form-control" id="lastName" placeholder="Surename"
-                                                required>
+                                                name="last" required>
                                         </div>
                                     </div>
                                 </div>
@@ -151,7 +151,7 @@
                                         clicking Sign Up, you agree to our Terms,
                                         Privacy Policy and Cookies Policy. You may receive SMS notifications from us and
                                         can opt
-                                        out at any time.</small>
+                                        out at any time.</label>
 
                                 </div>
                                 <div class="row d-flex justify-content-center">

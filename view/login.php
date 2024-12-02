@@ -10,10 +10,10 @@
             <div class="bg-white p-4 rounded shadow-lg ">
                 <form action="/login" method="post">
                     <div class="mb-3">
-                        <input type="text" class="form-control" placeholder="Email address or phone number" required>
+                        <input type="text" class="form-control" name="username" placeholder="Email address or phone number" required>
                     </div>
                     <div class="mb-3">
-                        <input type="password" class="form-control" placeholder="Password" required>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 mb-3">Log in</button>
                     <div class="text-center mb-3">

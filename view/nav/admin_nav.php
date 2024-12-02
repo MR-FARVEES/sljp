@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg fixed-top bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand me-auto text-primary" href="/">SLJP</a>
+        <a class="navbar-brand me-auto text-primary" href="/"><?php echo $_SESSION["lname"] . ","; ?></a>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasNavbarLabel">SLJP</h5>
@@ -11,12 +11,12 @@
                     <?php
                         if ($path->getPath() == "/admin") {
                     ?>
-                        <li class="nav-item">
-                            <a class="nav-link text-primary" aria-current="page" href="/admin"><i class="fa fa-home"></i>&nbsp;Home</a>
+                        <li class="nav-item border border-primary rounded col-md-1">
+                            <a class="nav-link text-primary text-center" aria-current="page" href="/admin"><i class="fa fa-home"></i>&nbsp;Home</a>
                         </li>
                     <?php } else { ?>
                         <li class="nav-item">
-                            <a class="nav-link text-primary" aria-current="page" href="/admin">Home</a>
+                            <a class="nav-link text-primary" aria-current="page" href="/admin">Admin</a>
                         </li>
                     <?php } ?>
                 </ul>
