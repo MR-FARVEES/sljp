@@ -34,11 +34,11 @@
                                                 for ($i = 1; $i <= 31; $i++) {
                                                     if ($i == 1) {
                                                         ?>
-                                                        <option value="<?php echo $i; ?>" default><?php echo $i; ?></option>
+                                                        <option value="<?php if ($i < 10) { echo '0' . $i; } else { echo $i; } ?>" default><?php echo $i; ?></option>
                                                         <?php
                                                     } else {
                                                         ?>
-                                                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                                        <option value="<?php if ($i < 10) { echo '0' . $i; } else { echo $i; } ?>"><?php echo $i; ?></option>
                                                         <?php
                                                     }
                                                 }
@@ -135,10 +135,10 @@
                                         aria-describedby="basic-addon1" required>
                                 </div>
                                 <div class="mb-2">
-                                    <input name="" class="form-control" name="nic" placeholder="NIC" required>
+                                    <input class="form-control" name="nic" placeholder="NIC" required>
                                 </div>
                                 <div class="mb-2">
-                                    <textarea name="" class="form-control" name="address" placeholder="Address" rows="3"></textarea>
+                                    <textarea class="form-control" name="address" placeholder="Address" rows="3"></textarea>
                                 </div>
                                 <div class="mb-2">
                                     <select name="role" class="form-select">

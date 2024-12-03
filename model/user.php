@@ -14,13 +14,15 @@ class UserModel extends Model {
             gender ENUM('Male', 'Female') DEFAULT 'Male',
             dob DATE NOT NULL,
             address TEXT,
-            profile VARCHAR(256) NOT NULL,
+            profile VARCHAR(256) DEFAULT 'default.jpg',
+            cover VARCHAR(256) DEFAULT 'default.jpg',
             nic VARCHAR(20) UNIQUE,
-            role ENUM('seeker', 'provider', 'admin')
+            role ENUM('seeker', 'provider', 'admin'),
+            status ENUM('Open', 'Hire', 'None') DEFAULT 'None'
         );
     ";
     private $insert_user = "INSERT INTO `user` (first, last, username, password, email, contact, gender, dob, address, profile, nic, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
-    private $auth_user = "SELECT id, first, last, email, gender, role, contact, nic, profile FROM `user` WHERE username = ? AND password = ?";
+    private $auth_user = "SELECT id, first, last, email, gender, role, contact, nic, profile, cover, status FROM `user` WHERE username = ? AND password = ?";
     private $update_password = "UPDATE `user` SET password = ? WHERE id = ?";
     private $delete_user = "DELETE FROM `user` WHERE id = ?";
     private $get_all = "SELECT * FROM `user`";
@@ -44,7 +46,7 @@ class UserModel extends Model {
     }
 
     public function updatePassword($id, $password) {
-        $this->update($this->update_password, [$password, $password],"is");
+        $this->update($this->update_password, [$id, $password],"is");
     }
 
     public function deleteUser($id) {

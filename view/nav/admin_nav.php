@@ -11,7 +11,7 @@
                     <?php
                         if ($path->getPath() == "/admin") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1">
+                        <li class="nav-item  rounded col-md-1">
                             <a class="nav-link text-primary text-center" aria-current="page" href="/admin"><i class="fa fa-home"></i>&nbsp;Home</a>
                         </li>
                     <?php } else { ?>

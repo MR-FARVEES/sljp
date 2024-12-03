@@ -11,7 +11,7 @@
                     <?php
                         if ($path->getPath() == "/") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1">
+                        <li class="nav-item rounded col-md-1">
                             <a class="nav-link text-primary text-center" aria-current="page" href="/"><i class="fa fa-home"></i>&nbsp;Home</a>
                         </li>
                     <?php } else { ?>
@@ -22,7 +22,7 @@
                     <?php
                         if ($path->getPath() == "/about") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1">
+                        <li class="nav-item  rounded col-md-1">
                             <a class="nav-link text-primary text-center" aria-current="page" href="/about"><i class="fa fa-users"></i>&nbsp;About</a>
                         </li>
                     <?php } else { ?>
@@ -33,7 +33,7 @@
                     <?php
                         if ($path->getPath() == "/contact") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1">
+                        <li class="nav-item  rounded col-md-1">
                             <a class="nav-link text-primary text-center" aria-current="page" href="/contact"><i class="fa fa-phone"></i>&nbsp;Contact</a>
                         </li>
                     <?php } else { ?>

@@ -16,7 +16,7 @@ class UserController extends Controller {
             $password = $_POST["password"];
             $result = $this->userModel->authenticate($username, $password);
             while ($row = $result->fetch_assoc()) { 
-                $this->loginUser( $row["id"], $row["first"], $row["last"], $row["email"], $row["gender"], $row["role"], $row["contact"], $row["nic"], $row["profile"]);
+                $this->loginUser( $row["id"], $row["first"], $row["last"], $row["email"], $row["gender"], $row["role"], $row["contact"], $row["nic"], $row["profile"], $row["cover"], $row["status"]);
             }
         }
         include_once __DIR__ ."/../view/login.php";
@@ -42,11 +42,10 @@ class UserController extends Controller {
             $count = $this->userModel->count();
             $filename = "profile-" . $count .".jpg";
             $upload_path = __DIR__ ."/../assets/images/user/" . $filename;
-
             move_uploaded_file($_FILES["image"]["tmp_name"], $upload_path);
 
             try {
-                $this->userModel->createNewUser($first, $last, $username, $password, $email, $contact, $gender, $year . "-" . $month . "-" . $year, $address, $filename, $nic, $role);
+                $this->userModel->createNewUser($first, $last, $username, $password, $email, $contact, $gender, $year . "-" . $month . "-" . $day, $address, $filename, $nic, $role);
                 $this->redirect("/login?create=true");
             } catch (mysqli_sql_exception $e) {
                 $this->redirect("/register?exists=true"); 

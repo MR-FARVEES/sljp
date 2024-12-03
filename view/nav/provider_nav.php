@@ -11,7 +11,7 @@
                     <?php
                         if ($path->getPath() == "/provider") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1 text-center">
+                        <li class="nav-item  rounded col-md-1 text-center">
                             <a class="nav-link text-primary" aria-current="page" href="/provider"><i class="fa fa-home"></i>&nbsp;Home</a>
                         </li>
                     <?php } else { ?>
@@ -22,7 +22,7 @@
                     <?php
                         if ($path->getPath() == "/provider/network") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1 text-center">
+                        <li class="nav-item  rounded col-md-1 text-center">
                             <a class="nav-link text-primary" aria-current="page" href="/provider/network"><i class="fa fa-globe"></i>&nbsp;Network</a>
                         </li>
                     <?php } else { ?>
@@ -33,7 +33,7 @@
                     <?php
                         if ($path->getPath() == "/provider/job") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1 text-center">
+                        <li class="nav-item  rounded col-md-1 text-center">
                             <a class="nav-link text-primary" aria-current="page" href="/provider/job"><i class="fa fa-briefcase"></i>&nbsp;Job</a>
                         </li>
                     <?php } else { ?>
@@ -44,7 +44,7 @@
                     <?php
                         if ($path->getPath() == "/provider/chat") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1 text-center">
+                        <li class="nav-item  rounded col-md-1 text-center">
                             <a class="nav-link text-primary" aria-current="page" href="/provider/chat"><i class="fa fa-comment"></i>&nbsp;Chat</a>
                         </li>
                     <?php } else { ?>
@@ -55,7 +55,7 @@
                     <?php
                         if ($path->getPath() == "/provider/profile") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1 text-center">
+                        <li class="nav-item  rounded col-md-1 text-center">
                             <a class="nav-link text-primary" aria-current="page" href="/provider/profile"><i class="fa fa-user"></i>&nbsp;Profile</a>
                         </li>
                     <?php } else { ?>

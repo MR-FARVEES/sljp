@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg fixed-top bg-light">
+<nav class="navbar navbar-expand-lg fixed-top bg-white">
     <div class="container-fluid">
         <a class="navbar-brand me-auto text-primary" href="/"><?php echo $_SESSION["lname"] . ","; ?></a>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -11,7 +11,7 @@
                     <?php
                         if ($path->getPath() == "/seeker") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1">
+                        <li class="nav-item  rounded col-md-1">
                             <a class="nav-link text-primary text-center" aria-current="page" href="/seeker"><i class="fa fa-home"></i>&nbsp;Home</a>
                         </li>
                     <?php } else { ?>
@@ -22,7 +22,7 @@
                     <?php
                         if ($path->getPath() == "/seeker/network") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1">
+                        <li class="nav-item  rounded col-md-1">
                             <a class="nav-link text-primary text-center" aria-current="page" href="/seeker/network"><i class="fa fa-globe"></i>&nbsp;Network</a>
                         </li>
                     <?php } else { ?>
@@ -33,7 +33,7 @@
                     <?php
                         if ($path->getPath() == "/seeker/job") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1">
+                        <li class="nav-item  rounded col-md-1">
                             <a class="nav-link text-primary text-center" aria-current="page" href="/seeker/job"><i class="fa fa-briefcase"></i>&nbsp;Job</a>
                         </li>
                     <?php } else { ?>
@@ -44,7 +44,7 @@
                     <?php
                         if ($path->getPath() == "/seeker/chat") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1">
+                        <li class="nav-item  rounded col-md-1">
                             <a class="nav-link text-primary text-center" aria-current="page" href="/seeker/chat"><i class="fa fa-comments"></i>&nbsp;Chat</a>
                         </li>
                     <?php } else { ?>
@@ -55,7 +55,7 @@
                     <?php
                         if ($path->getPath() == "/seeker/profile") {
                     ?>
-                        <li class="nav-item border border-primary rounded col-md-1">
+                        <li class="nav-item  rounded col-md-1">
                             <a class="nav-link text-primary text-center" aria-current="page" href="/seeker/profile"><i class="fa fa-user"></i>&nbsp;Profile</a>
                         </li>
                     <?php } else { ?>
