@@ -1,13 +1,22 @@
 <?php
 require_once __DIR__ . "/../core/control.php";
 require_once __DIR__ . "/../model/user.php";
+require_once __DIR__ . "/../model/education.php";
+require_once __DIR__ . "/../model/university.php";
+require_once __DIR__ . "/../model/skills.php";
 
 class UserController extends Controller {
     private $userModel;
+    private $educationModel;
+    private $universityModel;
+    private $skillModel;
 
     public function __construct() {
         parent::__construct();
         $this->userModel = new UserModel();
+        $this->educationModel = new EducationModel();
+        $this->universityModel = new UniversityModel();
+        $this->skillModel = new SkillModel();
     }
 
     public function login() {
@@ -51,7 +60,7 @@ class UserController extends Controller {
                 $this->redirect("/register?exists=true"); 
             }
         }
-        include_once __DIR__ ."/../view/register.php";
+        include_once __DIR__ . "/../view/register.php";
     }
 
     public function logout() {
@@ -59,6 +68,23 @@ class UserController extends Controller {
     }
 
     public function profile() {
+        $user_info = null;
+        $result = $this->userModel->getUserInfo($_SESSION["id"]);
+        while ($row = $result->fetch_assoc()) {
+            $user_info = $row;
+        }
+        $educations = $this->educationModel->getEducation($_SESSION["id"]);
+        $uniModle = $this->universityModel;
         include_once __DIR__ ."/../view/profile.php";
+    }
+
+    public function skills() {
+        echo "[";
+        $skills = $this->skillModel->getAllSkills();
+        while ($row= $skills->fetch_assoc()) {
+            echo $row['title'] . ",";
+        }
+        echo "]";
+        exit;
     }
 }

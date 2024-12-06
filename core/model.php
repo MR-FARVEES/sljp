@@ -11,7 +11,7 @@ class Model {
         $this->conn = new mysqli($this->host, $this->username, $this->password, $this->database);
     }
 
-    public function query($sql, $params, $types) {
+    private function query($sql, $params, $types) {
         $stmt = $this->conn->prepare($sql);
         if ($params && $types) { 
             $stmt->bind_param($types, ...$params);
@@ -28,23 +28,23 @@ class Model {
         return $result;
     }
 
-    public function create($sql, $params = null, $types = null) {
+    protected function create($sql, $params = null, $types = null) {
         $this->query($sql, $params, $types);
     }
 
-    public function insert($sql, $params = null, $types = null) {
+    protected function insert($sql, $params = null, $types = null) {
         $this->query($sql, $params, $types);
     }
 
-    public function update($sql, $params = null, $types = null) {
+    protected function update($sql, $params = null, $types = null) {
         $this->query($sql, $params, $types);
     }
 
-    public function delete($sql, $params = null, $types = null) {
+    protected function delete($sql, $params = null, $types = null) {
         $this->query($sql, $params, $types);
     }
 
-    public function fetch($sql, $params = null, $types = null) {
+    protected function fetch($sql, $params = null, $types = null) {
         return $this->query($sql, $params, $types);
     }
 }

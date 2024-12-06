@@ -18,7 +18,8 @@ class UserModel extends Model {
             cover VARCHAR(256) DEFAULT 'default.jpg',
             nic VARCHAR(20) UNIQUE,
             role ENUM('seeker', 'provider', 'admin'),
-            status ENUM('Open', 'Hire', 'None') DEFAULT 'None'
+            status ENUM('Open', 'Hire', 'None') DEFAULT 'None',
+            headline TEXT
         );
     ";
     private $insert_user = "INSERT INTO `user` (first, last, username, password, email, contact, gender, dob, address, profile, nic, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -27,6 +28,7 @@ class UserModel extends Model {
     private $delete_user = "DELETE FROM `user` WHERE id = ?";
     private $get_all = "SELECT * FROM `user`";
     private $user_count = "SELECT COUNT(*) as count FROM `user`";
+    private $user_info = "SELECT * FROM `user` WHERE id = ?";
 
     public function __construct() {
         parent::__construct();
@@ -62,5 +64,9 @@ class UserModel extends Model {
         while ($row = $result->fetch_assoc()) {
             return $row["count"];
         }
+    }
+
+    public function getUserInfo($id) {
+        return $this->fetch($this->user_info, [$id],"i");
     }
 }

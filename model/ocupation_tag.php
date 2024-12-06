@@ -6,7 +6,7 @@ class OccupationTagModel extends Model {
         CREATE TABLE IF NOT EXISTS `occupation_tag` (
             id INT PRIMARY KEY AUTO_INCREMENT,
             user_id INT REFERENCES `user` (id) ON DELETE CASCADE,
-            name VARCHAR(100) NOT NULL
+            job_title_id INT REFERENCES `job_title` (id) ON DELETE CASCADE
         );
     ";
 

@@ -13,6 +13,7 @@ class SeekerController extends UserController {
     }
 
     public function network() {
+        
         include_once __DIR__ ."/../view/seekers/network.php";
     }
 
