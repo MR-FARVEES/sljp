@@ -24,20 +24,36 @@
                                 <i class="fa fa-shield"></i>&nbsp;verify now</span>
                         </h5>
                         <div>
-                            <div class="d-flex justify-content-between">
-                                <img src="/assets/images/cover/<?php echo $user_info['cover']; ?>" width="50"
-                                    height="50" class="rounded-circle" alt="">
-                                <p class="text-wrap w-75">
-                                    University of Kelaniya Sri Lanka
-                                </p>
+                            <div class="d-flex w-100 justify-content-between">
+                                <?php
+                                $i = 0;
+                                $educations = $this->educationModel->getEducation($user_info['id']);
+                                while ($education = $educations->fetch_assoc()) {
+
+                                    $i++;
+                                }
+                                if ($i == 0) {
+                                    ?>
+                                    <p class="text-wrap text-secondary fs-6  text-end">Please update your education via your
+                                        profile</p>
+                                    <?php
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
-                    <p class="card-text text-wrap">
-                        <small>Occupation tags | tag 2 | tag 3 | tag 4</small><br>
-                        <small>addr</small><br>
-                        <small>uni</small>
-                    </p>
+                    <div class="card-text text-wrap">
+                        <p class="fs-6 d-inline-block text-trancate text-wrap">
+                            <?php
+                            if ($user_info['headline'] != 'N/A') {
+                                echo $user_info['headline'];
+                            } else {
+                                echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                            }
+                            ?>
+                        </p>
+                        <p class="fw-light"><?php echo $user_info['address']; ?></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,9 +72,7 @@
                             class="fa fa-shield text-secondary"></i>
                     </h5>
                     <p class="card-text text-wrap">
-                        <small>Occupation tags | tag 2 | tag 3 | tag 4</small><br>
-                        <small>addr</small><br>
-                        <small>uni</small>
+
                     </p>
                 </div>
             </div>
@@ -72,7 +86,7 @@
             <div class="modal-header">
                 <div class="d-flex justify-content-between w-100">
                     <h5 class="modal-title">Edit Profile</h5>
-                    <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             </div>
             <div class="modal-body" style="max-height: 500px;">
@@ -97,31 +111,7 @@
                 <div class="mb-3">
                     <label for="school">School*</label>
                     <select name="school" id="school" class="form-select" area-hidden="true">
-                        <?php
-                        $i = 0;
-                        while ($row = $educations->fetch_assoc()) {
-                            $res = $uniModel->getUniversity($row['institude']);
-                            $university = null;
-                            while ($nrow = $res->fetch_assoc()) {
-                                $university = $nrow['institude'];
-                            }
-                            if ($i == 0) {
-                                ?>
-                                <option value="<?php echo $university; ?>" default><?php echo $university; ?></option>
-                                <?php
-                            } else {
-                                ?>
-                                <option value="<?php echo $university; ?>"><?php echo $university; ?></option>
-                                <?php
-                            }
-                            $i++;
-                        }
-                        if ($i == 0) {
-                            ?>
-                            <option value="Please Select" default>Please Select</option>
-                            <?php
-                        }
-                        ?>
+
                     </select>
                 </div>
                 <div class="mb-3">
@@ -153,37 +143,89 @@
             <div class="modal-header">
                 <div class="d-flex justify-content-between w-100">
                     <h5 class="modal-title">Add Education</h5>
-                    <button class="btn btn-close" data-bs-dismiss="modal" data-bs-toggle="modal"
-                        data-bs-target="#editProfile"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        data-bs-toggle="modal" data-bs-target="#editProfile"></button>
                 </div>
             </div>
             <div class="modal-body" style="max-height: 500px;">
                 <h6 class="fw-light">* indicates required</h6>
                 <div class="mb-3">
-                    <div class="alert alert-warning" role="alert">
-                        A simple warning alert—check it out!
+                    <div id="alert" class="alert alert-warning d-none" role="alert">
+                        Some fields are required!
                     </div>
-                    <label for="edu-school">School*</label>
-                    <input type="text" class="form-control" id="edu-school" placeholder="Ex: University of Kelaniya"
-                        required>
+                    <div class="dropdown" id="skill-dropdown">
+                        <label for="edu-school">School*</label>
+                        <input  type="text" 
+                                class="form-control" 
+                                id="edu-school" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false" 
+                                placeholder="Ex: University of Kelaniya"
+                                required>
+                        <ul id="schools" class="dropdown-menu w-100" aria-labelledby="edu-school">
+
+                        </ul>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="edu-degree">Degree*</label>
-                    <input type="text" class="form-control" id="edu-degree" placeholder="Ex: Batchelor's" required>
+                    <div class="dropdown">
+                        <label for="edu-degree">Degree*</label>
+                        <input  type="text" 
+                                class="form-control" 
+                                id="edu-degree" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false" 
+                                placeholder="Ex: Batchelor's" 
+                                required>
+                        <ul id="degrees" class="dropdown-menu w-100" aria-labelledby="edu-degree">
+
+                        </ul>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="edu-field">Field of study*</label>
-                    <input type="text" class="form-control" id="edu-field" placeholder="Ex: Computing Technology"
-                        required>
+                <div class="dropdown">
+                        <label for="edu-field">Field of Study*</label>
+                        <input  type="text" 
+                                class="form-control" 
+                                id="edu-field" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false" 
+                                placeholder="Ex: Batchelor's" 
+                                required>
+                        <ul id="fields" class="dropdown-menu w-100" aria-labelledby="edu-field">
+
+                        </ul>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="">Start date*</label>
                     <div class="d-flex">
                         <select id="edu-start-month" class="form-select me-3" area-hidden="true">
                             <option value="month" default>Month</option>
+                            <?php
+                            for ($i = 1; $i <= 12; $i++) {
+                                $month = date('F', mktime(0, 0, 0, $i, 1));
+                                ?>
+                                <option value="<?php if ($i < 10) {
+                                    echo '0' . $i;
+                                } else {
+                                    echo $i;
+                                } ?>">
+                                    <?php echo $month; ?></option>
+                                <?php
+                            }
+                            ?>
                         </select>
                         <select id="edu-start-year" class="form-select" area-hidden="true">
                             <option value="year" default>Year</option>
+                            <?php
+                            $currentDate = date('Y');
+                            for ($i = $currentDate - 10; $i <= $currentDate + 20; $i++) {
+                                ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                <?php
+                            }
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -192,9 +234,30 @@
                     <div class="d-flex">
                         <select id="edu-end-month" class="form-select me-3" area-hidden="true">
                             <option value="month" default>Month</option>
+                            <?php
+                            for ($i = 1; $i <= 12; $i++) {
+                                $month = date('F', mktime(0, 0, 0, $i, 1));
+                                ?>
+                                <option value="<?php if ($i < 10) {
+                                    echo '0' . $i;
+                                } else {
+                                    echo $i;
+                                } ?>">
+                                    <?php echo $month; ?></option>
+                                <?php
+                            }
+                            ?>
                         </select>
                         <select id="edu-end-year" class="form-select" area-hidden="true">
                             <option value="year" default>Year</option>
+                            <?php
+                            $currentDate = date('Y');
+                            for ($i = $currentDate - 10; $i <= $currentDate + 20; $i++) {
+                                ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                <?php
+                            }
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -232,7 +295,13 @@
 <script>
     $(document).ready(function () {
         var skills = [];
+        var universities = [];
+        var degrees = [];
+        var fields = [];
         var userInput = "";
+        var schoolName = "";
+        var degreeName = "";
+        var fieldName = "";
 
         $.ajax({
             url: '/skills',
@@ -245,6 +314,61 @@
                 const matches = response.matchAll(regex);
                 for (const match of matches) {
                     skills = match[1].split(",");
+                }
+            },
+            error: function (xhr, status, errror) {
+                console.log("ERROR: " + errror);
+            }
+        });
+
+        $.ajax({
+            url: '/universities',
+            data: {},
+            type: 'post',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                const regex = /\[(.*?)\]/g;
+                const matches = response.matchAll(regex);
+                for (const match of matches) {
+                    universities = match[1].split(",");
+                }
+                console.log(universities);
+            },
+            error: function (xhr, status, errror) {
+                console.log("ERROR: " + errror);
+            }
+        });
+
+        $.ajax({
+            url: '/degrees',
+            data: {},
+            type: 'post',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                const regex = /\[(.*?)\]/g;
+                const matches = response.matchAll(regex);
+                for (const match of matches) {
+                    degrees = match[1].split(",");
+                }
+            },
+            error: function (xhr, status, errror) {
+                console.log("ERROR: " + errror);
+            }
+        });
+
+        $.ajax({
+            url: '/fields',
+            data: {},
+            type: 'post',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                const regex = /\[(.*?)\]/g;
+                const matches = response.matchAll(regex);
+                for (const match of matches) {
+                    fields = match[1].split(",");
                 }
             },
             error: function (xhr, status, errror) {
@@ -318,6 +442,11 @@
             const grade = $('#edu-grade').val().trim();
             const activities = $('#edu-activities').val().trim();
             const description = $('#edu-description').val().trim();
+            var skills = [];
+
+            $('#skills div h6').each(function () {
+                skills.push($(this).text().trim());
+            });
 
             if (school && degree && field && start_month != "Month" && start_year != "Year" &&
                 end_month != "Month" && end_year != "Year" && grade && activities && description) {
@@ -326,29 +455,116 @@
                 formData.append('degree', degree);
                 formData.append('field', field);
                 formData.append('start-month', start_month);
-                formData.append('start-yeare', start_year);
+                formData.append('start-year', start_year);
                 formData.append('end-month', end_month);
                 formData.append('end-year', end_year);
                 formData.append('grade', grade);
                 formData.append('activities', activities);
                 formData.append('description', description);
+                formData.append('skills', skills);
 
                 $.ajax({
-                    url: '/education/submit',
+                    url: '/education/add',
                     data: formData,
-                    type: post,
+                    type: 'post',
                     contentType: false,
                     processData: false,
                     success: function (response) {
-
+                        const regex = /\[(.*?)\]/g;
+                        const matches = response.matchAll(regex);
+                        var id = 0;
+                        for (const match of matches) {
+                            id = match[1].split(",");
+                        }
+                        $('#school').append(`<option value="${id}">${school}</option>`);
+                        $('#editEducation').modal('hide');
+                        $('#editProfile').modal('show');
                     },
                     error: function (xhr, status, error) {
                         console.log("ERROR: " + error);
                     }
                 });
             } else {
-                console.log("some fields are required");
+                $('#alert').removeClass('d-none');
             }
+        });
+
+        $('#edu-school').on("keydown", function (evt) {
+            if (evt.key == "Backspace") {
+                const tmp = $('#edu-school').val();
+                schoolName = tmp.slice(0, tmp.length - 1);
+            } else if (evt.key === "Shift" || evt.key === "Alt") {
+
+            } else {
+                schoolName += evt.key;
+            }
+
+            const matchingElements = $.grep(universities, function (element) {
+                return element.toLowerCase().includes(schoolName.toLowerCase()) ||
+                    element.toLowerCase().startsWith(schoolName.toLowerCase()) ||
+                    element.toLowerCase().endsWith(schoolName.toLowerCase());
+            });
+
+            $('#schools').empty();
+            matchingElements.forEach(university => {
+                const button = $(`<li><button class="dropdown-item">${university}</button></li>`);
+                button.find('button').click(function() {
+                    $('#edu-school').val(university);
+                });
+                $('#schools').append(button);
+            });
+        });
+
+        $('#edu-degree').on("keydown", function (evt) {
+            if (evt.key == "Backspace") {
+                const tmp = $('#edu-school').val();
+                degreeName = tmp.slice(0, tmp.length - 1);
+            } else if (evt.key === "Shift" || evt.key === "Alt") {
+
+            } else {
+                degreeName += evt.key;
+            }
+
+            const matchingElements = $.grep(degrees, function (element) {
+                return element.toLowerCase().includes(degreeName.toLowerCase()) ||
+                    element.toLowerCase().startsWith(degreeName.toLowerCase()) ||
+                    element.toLowerCase().endsWith(degreeName.toLowerCase());
+            });
+
+            $('#degrees').empty();
+            matchingElements.forEach(degree => {
+                const button = $(`<li><button class="dropdown-item">${degree}</button></li>`);
+                button.find('button').click(function() {
+                    $('#edu-degree').val(degree);
+                });
+                $('#degrees').append(button);
+            });
+        });
+
+        $('#edu-field').on("keydown", function (evt) {
+            if (evt.key == "Backspace") {
+                const tmp = $('#edu-field').val();
+                fieldName = tmp.slice(0, tmp.length - 1);
+            } else if (evt.key === "Shift" || evt.key === "Alt") {
+
+            } else {
+                fieldName += evt.key;
+            }
+
+            const matchingElements = $.grep(fields, function (element) {
+                return element.toLowerCase().includes(fieldName.toLowerCase()) ||
+                    element.toLowerCase().startsWith(fieldName.toLowerCase()) ||
+                    element.toLowerCase().endsWith(fieldName.toLowerCase());
+            });
+
+            $('#fields').empty();
+            matchingElements.forEach(field => {
+                const button = $(`<li><button class="dropdown-item">${field}</button></li>`);
+                button.find('button').click(function() {
+                    $('#edu-field').val(field);
+                });
+                $('#fields').append(button);
+            });
         });
     });
 </script>

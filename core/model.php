@@ -47,4 +47,8 @@ class Model {
     protected function fetch($sql, $params = null, $types = null) {
         return $this->query($sql, $params, $types);
     }
+
+    public function insert_id() {
+        return $this->conn->insert_id;
+    }
 }

@@ -1,14 +1,16 @@
 <?php
 require_once __DIR__ ."/../core/model.php";
 
-class SkillModel extends Model {
+class UserSkillModel extends Model {
     private $create_user_skill_table = "
         CREATE TABLE IF NOT EXISTS `user_skill` (
             user_id INT REFERENCES `user` (id) ON DELETE CASCADE,
-            skill_id INT REFERENCES `skill` (id) ON DELETE CASCADE,
-            PRIMARY KEY (user_id, skill_id)
+            skill VARCHAR(50) NOT NULL,
+            PRIMARY KEY (user_id, skill)
         );
     ";
+    private $insert_skill = "INSERT INTO `user_skill` (user_id, skill) VALUES (?,?);";
+    private $get_all = "SELECT skill FROM `user_skill`";
 
     public function __construct() {
         parent::__construct();
@@ -16,6 +18,14 @@ class SkillModel extends Model {
     }
 
     private function Init() {
+        $this->create($this->create_user_skill_table);
+    }
 
+    public function createNewSkill($user_id, $skill) {
+        $this->insert($this->insert_skill, [$user_id, $skill], "is");
+    }
+
+    public function getAllSkills() {
+        return $this->fetch($this->get_all);
     }
 }

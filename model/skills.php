@@ -10,6 +10,7 @@ class SkillModel extends Model {
     ";
     private $insert_skill = "INSERT INTO `skill` (title) VALUES (?);";
     private $get_all = "SELECT * FROM `skill`";
+    private $delete_skill = "DELETE FROM `skill` WHERE id = ?";
 
     public function __construct() {
         parent::__construct();
@@ -21,10 +22,14 @@ class SkillModel extends Model {
     }
 
     public function createNewSkill($title) {
-        $this->create($this->create_skill_table);
+        $this->insert($this->insert_skill, [$title], "s");
     }
 
     public function getAllSkills() {
         return $this->fetch($this->get_all);
+    }
+
+    public function removeSkill($id) {
+        $this->delete($this->delete_skill, [$id], "i");
     }
 }

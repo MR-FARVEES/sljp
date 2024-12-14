@@ -19,7 +19,7 @@ class UserModel extends Model {
             nic VARCHAR(20) UNIQUE,
             role ENUM('seeker', 'provider', 'admin'),
             status ENUM('Open', 'Hire', 'None') DEFAULT 'None',
-            headline TEXT
+            headline VARCHAR(512) default 'N/A'
         );
     ";
     private $insert_user = "INSERT INTO `user` (first, last, username, password, email, contact, gender, dob, address, profile, nic, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -29,6 +29,7 @@ class UserModel extends Model {
     private $get_all = "SELECT * FROM `user`";
     private $user_count = "SELECT COUNT(*) as count FROM `user`";
     private $user_info = "SELECT * FROM `user` WHERE id = ?";
+    private $update_headline = "UPDATE `user` SET headline = ? WHERE id = ?";
 
     public function __construct() {
         parent::__construct();
@@ -68,5 +69,9 @@ class UserModel extends Model {
 
     public function getUserInfo($id) {
         return $this->fetch($this->user_info, [$id],"i");
+    }
+
+    public function updateHeadline($headline) {
+        $this->update($this->update_headline, [$headline],"s");
     }
 }

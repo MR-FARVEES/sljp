@@ -29,14 +29,26 @@ $router->addRoute("GET", "/provider/network", [ProviderController::class, "netwo
 $router->addRoute("GET", "/provider/job"    , [ProviderController::class, "job"             ]);
 $router->addRoute("GET", "/provider/chat"   , [ProviderController::class, "chat"            ]);
 $router->addRoute("GET", "/provider/profile", [ProviderController::class, "providerProfile" ]);
-$router->addRoute("GET", "/admin"           , [AdminController::class   , "index"           ]);
+$router->addRoute("GET", "/admin"           , [AdminController::class   , "dashboard"       ]);
 
 // POST REQUEST METHODS
 $router->addRoute("POST", "/login"          , [UserController::class    , "login"            ]);
 $router->addRoute("POST", "/register"       , [UserController::class    , "register"         ]);
 
-// DATA FETCH VIA POST
-$router->addRoute("POST", "/skills"         , [UserController::class    , "skills"          ]);
+// DATA FETCH | INSERT | DELETE
+$router->addRoute("POST", "/skills"         , [UserController::class    , "skills"           ]);
+$router->addRoute("POST", "/universities"   , [UserController::class    , "universities"     ]);
+$router->addRoute("POST", "/degrees"        , [UserController::class    , "degrees"          ]);
+$router->addRoute("POST", "/fields"         , [UserController::class    , "fields"           ]);
+$router->addRoute("POST", "/education/add"  , [UserController::class    , "addEducation"     ]);
+$router->addRoute("POST", "/university/add" , [AdminController::class   , "createUniversity" ]);
+$router->addRoute("POST", "/university/del" , [AdminController::class   , "removeUniversity" ]);
+$router->addRoute("POST", "/skill/add"      , [AdminController::class   , "createSkill"      ]);
+$router->addRoute("POST", "/skill/del"      , [AdminController::class   , "removeSkill"      ]);
+$router->addRoute("POST", "/degree/add"     , [AdminController::class   , "createDegree"     ]);
+$router->addRoute("POST", "/degree/del"     , [AdminController::class   , "removeDegree"     ]);
+$router->addRoute("POST", "/field/add"      , [AdminController::class   , "createField"      ]);
+$router->addRoute("POST", "/field/del"      , [AdminController::class   , "removeField"      ]);
 
 include_once __DIR__ ."/header.php";
 $router->resolveRoute($request);

@@ -7,21 +7,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <ul class="navbar-nav justify-content-end flex-grow-1">
                     <?php
                         if ($path->getPath() == "/admin") {
                     ?>
-                        <li class="nav-item  rounded col-md-1">
-                            <a class="nav-link text-primary text-center" aria-current="page" href="/admin"><i class="fa fa-home"></i>&nbsp;Home</a>
+                        <li class="nav-item  rounded col-md-2">
+                            <a class="nav-link text-primary text-center" aria-current="page" href="/admin">
+                                <i class="fa fa-tachometer"></i>&nbsp;Dashboard</a>
                         </li>
                     <?php } else { ?>
                         <li class="nav-item">
-                            <a class="nav-link text-primary" aria-current="page" href="/admin">Admin</a>
+                            <a class="nav-link text-primary" aria-current="page" href="/admin">Dashboard</a>
                         </li>
                     <?php } ?>
                 </ul>
             </div>
         </div>
+        <a href="/logout" class="btn btn-secondary">Logout</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
             aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

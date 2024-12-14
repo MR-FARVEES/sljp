@@ -12,6 +12,7 @@ class UniversityModel extends Model {
     private $insert_uni = "INSERT INTO `university` (name, logo) VALUES (?,?);";
     private $get_uni = "SELECT * FROM `university` WHERE id = ?";
     private $get_all = "SELECT * FROM `university`";
+    private $delete_uni = "DELETE FROM `university` WHERE id = ?";
 
     public function __construct() {
         parent::__construct();
@@ -30,7 +31,11 @@ class UniversityModel extends Model {
         return $this->fetch($this->get_uni, [$id],"i");
     }
 
-    public function getAllUniversity() {
+    public function getAllUniversities() {
         return $this->fetch($this->get_all);
+    }
+
+    public function removeUniversity($id) {
+        $this->delete($this->delete_uni, [$id],"i");
     }
 }
