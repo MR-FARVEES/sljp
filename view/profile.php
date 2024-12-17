@@ -1,15 +1,22 @@
+<?php 
+$id = isset($_GET['id']) ? $_GET['id'] : 0;
+?>
 <div class="container-fluid" style="margin:0; padding;0;">
     <div class=" d-flex justify-content-center">
         <div class="d-flex w-100 justify-content-center">
             <div class="w-75">
                 <div class="d-flex mt-5 mb-5">
+                    <?php 
+                        $users = $this->userModel->getUserInfo($id);
+                        $user = $users->fetch_assoc();
+                    ?>
                     <div class="card align-self-start shadow-sm mt-5 col-md-9 me-2">
                         <img class="card-img-top" height="240"
-                            src="/assets/images/cover/<?php echo $user_info['cover']; ?>" alt="Title" />
+                            src="/assets/images/cover/<?php if ($id == 0) { echo $user_info['cover']; } else { echo $user['cover']; }?>" alt="Title" />
                         <div class="rounded-circle"
                             style="margin-left:20px;margin-top:-140px;width: 186px;height: 186px;background:#fff;padding:3px;">
                             <img class="rounded-circle" width="180" height="180"
-                                src="/assets/images/user/<?php echo $user_info['profile']; ?>" alt="Title" />
+                                src="/assets/images/user/<?php if ($id == 0) { echo $user_info['profile']; } else { echo $user['profile']; }?> ?>" alt="Title" />
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-end">
@@ -20,16 +27,28 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title">
-                                    <?php echo ucfirst($user_info['first']) . " " . ucfirst($user_info['last']); ?>&nbsp;
+                                    <?php if ($id == 0) { 
+                                        echo ucfirst($user_info['first']) . " " . ucfirst($user_info['last']);
+                                    ?>
                                     <span class=" text-secondary border p-1 pe-2 ps-2 border-secondary rounded-5"
                                         style="font-size:12px;">
                                         <i class="fa fa-shield"></i>&nbsp;verify now</span>
+                                    <?php
+                                    } else {
+                                        echo ucfirst($user['first']) . " " . ucfirst($user['last']);
+                                    } ?>&nbsp;
                                 </h5>
                                 <div class="me-2">
                                     <div class="w-100">
                                         <?php
                                         $i = 0;
-                                        $educations = $this->educationModel->getEducation($user_info['id']);
+                                        $user_id = 0;
+                                        if ($id == 0) {
+                                            $user_id = $user_info['id'];
+                                        } else {
+                                            $user_id = $user['id'];
+                                        }
+                                        $educations = $this->educationModel->getEducation($user_id);
                                         while ($education = $educations->fetch_assoc()) {
                                             $unies = $this->universityModel->getUniversity($education['institude']);
                                             while ($uni = $unies->fetch_assoc()) {
@@ -59,14 +78,22 @@
                             <div class="card-text text-wrap">
                                 <p class="fs-6 d-inline-block text-trancate text-wrap">
                                     <?php
-                                    if ($user_info['headline'] != 'N/A') {
-                                        echo $user_info['headline'];
+                                    if ($id == 0) {
+                                        if ($user_info['headline'] != 'N/A') {
+                                            echo $user_info['headline'];
+                                        } else {
+                                            echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                                        }
                                     } else {
-                                        echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                                        if ($user['headline'] != 'N/A') {
+                                            echo $user['headline'];
+                                        } else {
+                                            echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                                        }
                                     }
                                     ?>
                                 </p>
-                                <p class="fw-light"><?php echo $user_info['address']; ?></p>
+                                <p class="fw-light"><?php if ($id == 0)  { echo $user_info['address']; } else { echo $user['address']; }?></p>
                             </div>
                         </div>
                     </div>
