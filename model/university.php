@@ -5,7 +5,7 @@ class UniversityModel extends Model {
     private $create_university_table = "
         CREATE TABLE IF NOT EXISTS `university` (
             id INT PRIMARY KEY AUTO_INCREMENT,
-            name VARCHAR(100) NOT NULL,
+            name VARCHAR(100) UNIQUE,
             logo VARCHAR(100) NOT NULL
         );
     ";
@@ -13,6 +13,8 @@ class UniversityModel extends Model {
     private $get_uni = "SELECT * FROM `university` WHERE id = ?";
     private $get_all = "SELECT * FROM `university`";
     private $delete_uni = "DELETE FROM `university` WHERE id = ?";
+    private $get_uni_id = "SELECT id FROM `university` WHERE name = ?";
+
 
     public function __construct() {
         parent::__construct();
@@ -37,5 +39,9 @@ class UniversityModel extends Model {
 
     public function removeUniversity($id) {
         $this->delete($this->delete_uni, [$id],"i");
+    }
+
+    public function getUniId($name) {   
+        return $this->fetch($this->get_uni_id, [$name],"s");
     }
 }

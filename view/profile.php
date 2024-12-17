@@ -1,79 +1,93 @@
-<div class="container ms-5 me-5">
-    <div class="d-flex p-5">
-        <div class="me-3">
-            <div class="card shadow-sm mt-5 ms-5" style="min-width: 60rem;">
-                <img class="card-img-top" height="240" src="/assets/images/cover/<?php echo $user_info['cover']; ?>"
-                    alt="Title" />
-                <div class="rounded-circle"
-                    style="margin-left:20px;margin-top:-140px;width: 186px;height: 186px;background:#fff;padding:3px;">
-                    <img class="rounded-circle" width="180" height="180"
-                        src="/assets/images/user/<?php echo $user_info['profile']; ?>" alt="Title" />
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-end">
-                        <button class="btn" style="margin-top:-50px;" data-bs-toggle="modal"
-                            data-bs-target="#editProfile">
-                            <i class="fa fa-pencil fs-5"></i>
-                        </button>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <h5 class="card-title">
-                            <?php echo ucfirst($user_info['first']) . " " . ucfirst($user_info['last']); ?>&nbsp;
-                            <span class=" text-secondary border p-1 pe-2 ps-2 border-secondary rounded-5"
-                                style="font-size:12px;">
-                                <i class="fa fa-shield"></i>&nbsp;verify now</span>
-                        </h5>
-                        <div>
-                            <div class="d-flex w-100 justify-content-between">
-                                <?php
-                                $i = 0;
-                                $educations = $this->educationModel->getEducation($user_info['id']);
-                                while ($education = $educations->fetch_assoc()) {
-
-                                    $i++;
-                                }
-                                if ($i == 0) {
-                                    ?>
-                                    <p class="text-wrap text-secondary fs-6  text-end">Please update your education via your
-                                        profile</p>
+<div class="container-fluid" style="margin:0; padding;0;">
+    <div class=" d-flex justify-content-center">
+        <div class="d-flex w-100 justify-content-center">
+            <div class="w-75">
+                <div class="d-flex mt-5 mb-5">
+                    <div class="card align-self-start shadow-sm mt-5 col-md-9 me-2">
+                        <img class="card-img-top" height="240"
+                            src="/assets/images/cover/<?php echo $user_info['cover']; ?>" alt="Title" />
+                        <div class="rounded-circle"
+                            style="margin-left:20px;margin-top:-140px;width: 186px;height: 186px;background:#fff;padding:3px;">
+                            <img class="rounded-circle" width="180" height="180"
+                                src="/assets/images/user/<?php echo $user_info['profile']; ?>" alt="Title" />
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn" style="margin-top:-50px;" data-bs-toggle="modal"
+                                    data-bs-target="#editProfile">
+                                    <i class="fa fa-pencil fs-5"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">
+                                    <?php echo ucfirst($user_info['first']) . " " . ucfirst($user_info['last']); ?>&nbsp;
+                                    <span class=" text-secondary border p-1 pe-2 ps-2 border-secondary rounded-5"
+                                        style="font-size:12px;">
+                                        <i class="fa fa-shield"></i>&nbsp;verify now</span>
+                                </h5>
+                                <div class="me-2">
+                                    <div class="w-100">
+                                        <?php
+                                        $i = 0;
+                                        $educations = $this->educationModel->getEducation($user_info['id']);
+                                        while ($education = $educations->fetch_assoc()) {
+                                            $unies = $this->universityModel->getUniversity($education['institude']);
+                                            while ($uni = $unies->fetch_assoc()) {
+                                                ?>
+                                                <div class="d-flex justify-content-between mb-3">
+                                                    <img src="/assets/images/university/<?php echo $uni['logo'] ?>" width="30"
+                                                        height="30" class="border rounded-circle shadow-sm"
+                                                        alt="<?php echo $uni['name'] . " Logo"; ?>">
+                                                    <h6 class="ms-2 fs-6 pt-1"><?php echo $uni['name']; ?></h>
+                                                </div>
+                                                <?php
+                                            }
+                                            $i++;
+                                        }
+                                        if ($i == 0) {
+                                            ?>
+                                            <p class="text-wrap text-secondary fs-6  text-end">Please update your education
+                                                via
+                                                your
+                                                profile</p>
+                                            <?php
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-text text-wrap">
+                                <p class="fs-6 d-inline-block text-trancate text-wrap">
                                     <?php
-                                }
-                                ?>
+                                    if ($user_info['headline'] != 'N/A') {
+                                        echo $user_info['headline'];
+                                    } else {
+                                        echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                                    }
+                                    ?>
+                                </p>
+                                <p class="fw-light"><?php echo $user_info['address']; ?></p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-text text-wrap">
-                        <p class="fs-6 d-inline-block text-trancate text-wrap">
-                            <?php
-                            if ($user_info['headline'] != 'N/A') {
-                                echo $user_info['headline'];
-                            } else {
-                                echo '<span class="text-secondary">Add headlines via edit your profile</span>';
-                            }
-                            ?>
-                        </p>
-                        <p class="fw-light"><?php echo $user_info['address']; ?></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card align-self-start mt-5 shadow-sm" style="min-width:22rem;">
-                <img class="card-img-top" height="100" src="/assets/images/cover/<?php echo $_SESSION['cover']; ?>"
-                    alt="Title" />
-                <div
-                    style="margin-left:20px;margin-top:-60px;border-radius:60px;width: 120px;height: 120px;background:#fff;padding:4px;">
-                    <img style="border-radius:55px;" width="112" height="112"
-                        src="/assets/images/user/<?php echo $_SESSION['profile']; ?>" alt="Title" />
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <?php echo ucfirst($_SESSION['fname']) . " " . ucfirst($_SESSION['lname']); ?>&nbsp;<i
-                            class="fa fa-shield text-secondary"></i>
-                    </h5>
-                    <p class="card-text text-wrap">
+                    <div class="card align-self-start mt-5 shadow-sm col-md-3">
+                        <img class="card-img-top" height="100"
+                            src="/assets/images/cover/<?php echo $_SESSION['cover']; ?>" alt="Title" />
+                        <div
+                            style="margin-left:20px;margin-top:-60px;border-radius:60px;width: 120px;height: 120px;background:#fff;padding:4px;">
+                            <img style="border-radius:55px;" width="112" height="112"
+                                src="/assets/images/user/<?php echo $_SESSION['profile']; ?>" alt="Title" />
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <?php echo ucfirst($_SESSION['fname']) . " " . ucfirst($_SESSION['lname']); ?>&nbsp;<i
+                                    class="fa fa-shield text-secondary"></i>
+                            </h5>
+                            <p class="card-text text-wrap">
 
-                    </p>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,56 +97,77 @@
 <div class="modal fade" tabindex="-1" id="editProfile">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header">
-                <div class="d-flex justify-content-between w-100">
-                    <h5 class="modal-title">Edit Profile</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <form action="/profile/update" method="post">
+                <div class="modal-header">
+                    <div class="d-flex justify-content-between w-100">
+                        <h5 class="modal-title">Edit Profile</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-body" style="max-height: 500px;">
-                <h6 class="fw-light">* indicates required</h6>
-                <h5>Basic Info</h5>
-                <div class="mb-3 fw-light">
-                    <label for="first">Firstname*</label>
-                    <input type="text" id="first" class="form-control" name="first"
-                        value="<?php echo $user_info['first']; ?>" required>
+                <div class="modal-body" style="max-height: 500px;">
+                    <h6 class="fw-light">* indicates required</h6>
+                    <h5>Basic Info</h5>
+                    <div class="mb-3 fw-light">
+                        <label for="first">Firstname*</label>
+                        <input type="text" id="first" class="form-control" name="first"
+                            value="<?php echo $user_info['first']; ?>" required>
+                    </div>
+                    <div class="mb-3 fw-light">
+                        <label for="last">Lastname*</label>
+                        <input type="text" id="last" class="form-control" name="last"
+                            value="<?php echo $user_info['last']; ?>" required>
+                    </div>
+                    <div class="mb-3 fw-light">
+                        <label for="headline">Headline*</label>
+                        <textarea name="headline" id="headline" class="form-control"
+                            rows="2"><?php echo $user_info['headline']; ?></textarea>
+                    </div>
+                    <h5>Education</h5>
+                    <div class="mb-3">
+                        <label for="school">School*</label>
+                        <select name="school" id="school" class="form-select" area-hidden="true">
+                            <?php
+                            $i = 0;
+                            $educations = $this->educationModel->getEducation($_SESSION['id']);
+                            while ($education = $educations->fetch_assoc()) {
+                                $universities = $this->universityModel->getUniversity($education['institude']);
+                                while ($university = $universities->fetch_assoc()) {
+                                    ?>
+                                    <option value="<?php echo $university['name'] ?>"><?php echo $university['name'] ?></option>
+                                    <?php
+                                    $i++;
+                                }
+                            }
+                            if ($i == 0) {
+                                ?>
+                                <option value="">No Education Provided</option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn text-primary btn-hover" data-bs-toggle="modal"
+                            data-bs-target="#editEducation"><i class="fa fa-plus"></i>&nbsp;Add new education</button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="checkbox" id="show-school" name="show-school" value="show" class="form-check-input"
+                            style="transform:scale(1.2);" <?php if ($user_info['show_school'] == 'show') {
+                                echo 'checked';
+                            } ?>>
+                        <label for="show-school" class="form-check-label">&nbsp;Show school in my intro</label>
+                    </div>
+                    <h5>Location</h5>
+                    <div class="mb-3">
+                        <label for="address">Address*</label>
+                        <textarea name="address" id="address" class="form-control"
+                            row="2"><?php echo $user_info['address']; ?></textarea>
+                    </div>
                 </div>
-                <div class="mb-3 fw-light">
-                    <label for="last">Lastname*</label>
-                    <input type="text" id="last" class="form-control" name="last"
-                        value="<?php echo $user_info['last']; ?>" required>
+                <div class="modal-footer">
+                    <button class="btn btn-primary rounded-5">Save</button>
                 </div>
-                <div class="mb-3 fw-light">
-                    <label for="headline">Headline*</label>
-                    <textarea name="headline" id="headline" class="form-control"
-                        rows="2"><?php echo $user_info['headline']; ?></textarea>
-                </div>
-                <h5>Education</h5>
-                <div class="mb-3">
-                    <label for="school">School*</label>
-                    <select name="school" id="school" class="form-select" area-hidden="true">
-
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <button class="btn text-primary btn-hover" data-bs-toggle="modal" data-bs-target="#editEducation"><i
-                            class="fa fa-plus"></i>&nbsp;Add new education</button>
-                </div>
-                <div class="mb-3">
-                    <input type="checkbox" id="show-school" name="show-shool" class="form-check-input"
-                        style="transform:scale(1.2);">
-                    <label for="show-school" class="form-check-label">&nbsp;Show school in my intro</label>
-                </div>
-                <h5>Location</h5>
-                <div class="mb-3">
-                    <label for="address">Address*</label>
-                    <textarea name="address" id="address" class="form-control"
-                        row="2"><?php echo $user_info['address']; ?></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary rounded-5">Save</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -155,13 +190,8 @@
                     </div>
                     <div class="dropdown" id="skill-dropdown">
                         <label for="edu-school">School*</label>
-                        <input  type="text" 
-                                class="form-control" 
-                                id="edu-school" 
-                                data-bs-toggle="dropdown" 
-                                aria-expanded="false" 
-                                placeholder="Ex: University of Kelaniya"
-                                required>
+                        <input type="text" class="form-control" id="edu-school" data-bs-toggle="dropdown"
+                            aria-expanded="false" placeholder="Ex: University of Kelaniya" required>
                         <ul id="schools" class="dropdown-menu w-100" aria-labelledby="edu-school">
 
                         </ul>
@@ -170,28 +200,18 @@
                 <div class="mb-3">
                     <div class="dropdown">
                         <label for="edu-degree">Degree*</label>
-                        <input  type="text" 
-                                class="form-control" 
-                                id="edu-degree" 
-                                data-bs-toggle="dropdown" 
-                                aria-expanded="false" 
-                                placeholder="Ex: Batchelor's" 
-                                required>
+                        <input type="text" class="form-control" id="edu-degree" data-bs-toggle="dropdown"
+                            aria-expanded="false" placeholder="Ex: Batchelor's" required>
                         <ul id="degrees" class="dropdown-menu w-100" aria-labelledby="edu-degree">
 
                         </ul>
                     </div>
                 </div>
                 <div class="mb-3">
-                <div class="dropdown">
+                    <div class="dropdown">
                         <label for="edu-field">Field of Study*</label>
-                        <input  type="text" 
-                                class="form-control" 
-                                id="edu-field" 
-                                data-bs-toggle="dropdown" 
-                                aria-expanded="false" 
-                                placeholder="Ex: Batchelor's" 
-                                required>
+                        <input type="text" class="form-control" id="edu-field" data-bs-toggle="dropdown"
+                            aria-expanded="false" placeholder="Ex: Batchelor's" required>
                         <ul id="fields" class="dropdown-menu w-100" aria-labelledby="edu-field">
 
                         </ul>
@@ -211,7 +231,8 @@
                                 } else {
                                     echo $i;
                                 } ?>">
-                                    <?php echo $month; ?></option>
+                                    <?php echo $month; ?>
+                                </option>
                                 <?php
                             }
                             ?>
@@ -243,7 +264,8 @@
                                 } else {
                                     echo $i;
                                 } ?>">
-                                    <?php echo $month; ?></option>
+                                    <?php echo $month; ?>
+                                </option>
                                 <?php
                             }
                             ?>
@@ -279,7 +301,6 @@
                 </p>
                 <div id="manage-skills">
                     <div id="skills">
-
                     </div>
                     <button class="btn border-primary rounded-5 text-primary" id="add-skill"><i
                             class="fa fa-plus"></i>&nbsp;Add skill</button>
@@ -333,7 +354,6 @@
                 for (const match of matches) {
                     universities = match[1].split(",");
                 }
-                console.log(universities);
             },
             error: function (xhr, status, errror) {
                 console.log("ERROR: " + errror);
@@ -508,7 +528,7 @@
             $('#schools').empty();
             matchingElements.forEach(university => {
                 const button = $(`<li><button class="dropdown-item">${university}</button></li>`);
-                button.find('button').click(function() {
+                button.find('button').click(function () {
                     $('#edu-school').val(university);
                 });
                 $('#schools').append(button);
@@ -517,7 +537,7 @@
 
         $('#edu-degree').on("keydown", function (evt) {
             if (evt.key == "Backspace") {
-                const tmp = $('#edu-school').val();
+                const tmp = $('#edu-degree').val();
                 degreeName = tmp.slice(0, tmp.length - 1);
             } else if (evt.key === "Shift" || evt.key === "Alt") {
 
@@ -534,7 +554,7 @@
             $('#degrees').empty();
             matchingElements.forEach(degree => {
                 const button = $(`<li><button class="dropdown-item">${degree}</button></li>`);
-                button.find('button').click(function() {
+                button.find('button').click(function () {
                     $('#edu-degree').val(degree);
                 });
                 $('#degrees').append(button);
@@ -560,7 +580,7 @@
             $('#fields').empty();
             matchingElements.forEach(field => {
                 const button = $(`<li><button class="dropdown-item">${field}</button></li>`);
-                button.find('button').click(function() {
+                button.find('button').click(function () {
                     $('#edu-field').val(field);
                 });
                 $('#fields').append(button);

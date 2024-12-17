@@ -16,17 +16,23 @@
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <hr>
                     <div class="">
-                        <div class="p-3 mb-3 d-flex justify-content-between hover">
-                            <h6><i class="fa fa-link"></i>&nbsp;&nbsp;&nbsp;Connections</h6>
-                            <h6>2</h6>
+                        <div class="p-3 mb-3 hover">
+                            <a href="/user/connection" class="text-decoration-none d-flex justify-content-between">
+                                <h6><i class="fa fa-link"></i>&nbsp;&nbsp;&nbsp;Connections</h6>
+                                <h6>2</h6>
+                            </a>
                         </div>
                         <div class="p-3 mb-3 d-flex justify-content-between hover">
-                            <h6><i class="fa fa-users"></i>&nbsp;&nbsp;&nbsp;Groups</h6>
-                            <h6>2</h6>
+                            <a href="" class="text-decoration-none d-flex justify-content-between">
+                                <h6><i class="fa fa-users"></i>&nbsp;&nbsp;&nbsp;Groups</h6>
+                                <h6>2</h6>
+                            </a>
                         </div>
                         <div class="p-3 mb-3 d-flex justify-content-between hover">
-                            <h6><i class="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Events</h6>
-                            <h6>2</h6>
+                            <a href="" class="text-decoration-none d-flex justify-content-between">
+                                <h6><i class="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Events</h6>
+                                <h6>2</h6>
+                            </a>
                         </div>
                     </div>
                 </div>
