@@ -1,7 +1,7 @@
-<div class="container-fluid bg-light m-5">
-    <div class="row m-5">
-        <div class="col">
-            <div class="card fixed-top w-25" style="margin-top:100px;margin-left:200px;">
+<div class="container-fluid bg-light mt-5 w-100 d-flex justify-content-center">
+    <div class="row w-75 g-4 mt-1">
+        <div class="col-md-4">
+            <div class="card">
                 <div class="card-body" id="headingOne">
                     <button
                         class="btn w-100 collapsed text-decoration-none text-black d-flex justify-content-between fs-5"
@@ -38,8 +38,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
-            <div class="card" style="margin-top: 52px;margin-left:10px;margin-right:150px;">
+        <div class="col-12 col-md-8">
+            <div class="card mb-3">
                 <div class="card-header bg-white">
                     <div class="d-flex">
                         <h5 class="card-title fw-light">Invitations</h5>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card" style="margin-top: 52px;margin-left:10px;margin-right:150px;">
+            <div class="card mb-3">
                 <div class="card-header bg-white">
                     <div class="d-flex justify-content-between">
                         <h5 class="card-title fw-light">Achieve your goals faster with premium</h5>
@@ -74,7 +74,7 @@
                     <small>1-month free trial. We’ll remind you 7 days before your trial ends.</small>
                 </div>
             </div>
-            <div class="card" style="margin-top: 52px;margin-left:10px;margin-right:150px;">
+            <div class="card mb-3">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h6 class="card-title fw-light">People you may know based on your recent activity</h6>

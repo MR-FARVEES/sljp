@@ -4,9 +4,9 @@ $comment = "";
 ?>
 <div class="container-fluid mt-5 bg-light">
     <div class="p-5">
-        <div class="d-flex ps-5 pe-5">
-            <div>
-                <div class="card me-3 align-self-start shadow-sm" style="width: 16rem;">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card align-self-start shadow-sm">
                     <img class="card-img-top" height="100" src="assets/images/cover/<?php echo $_SESSION['cover']; ?>"
                         alt="Title" />
                     <div
@@ -26,13 +26,13 @@ $comment = "";
                         </p>
                     </div>
                 </div>
-                <div class="card me-2 mt-2 shadow-sm align-self-start" style="width: 16rem;">
+                <div class="card me-2 mt-2 shadow-sm align-self-start">
                     <div class="card-body">
                         <h4 class="card-title">Try Premium</h4>
                         <p class="card-text text-wrap">Occupation tags | tag 2 | tag 3 | tag 4</p>
                     </div>
                 </div>
-                <div class="card me-2 mt-2 shadow-sm align-self-start" style="width: 16rem;">
+                <div class="card me-2 mt-2 shadow-sm align-self-start">
                     <div class="card-body">
                         <p class="card-text"><i class="fa fa-users"></i>&nbsp;Groups</p>
                         <p class="card-text"><i class="fa fa-calendar"></i>&nbsp;Events</p>
@@ -40,8 +40,8 @@ $comment = "";
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 me-3">
-                <div class="card col-md-12 align-self-start shadow-sm mb-3">
+            <div class="col-12 col-md-6">
+                <div class="card align-self-start shadow-sm mb-3">
                     <img class="card-img-top" height="200" src="assets/images/cover/<?php echo $_SESSION['cover']; ?>"
                         alt="Title" />
                     <div class="card-body">
@@ -51,19 +51,19 @@ $comment = "";
                                 visible to you.</small></smal>
                         </h4>
                         <div class="row">
-                            <div class="col">
+                            <div class="col-12 col-md-6 mb-3">
                                 <button
-                                    class="col-md-12 border-m border-primary text-primary bg-white rounded-5 p-1">Yes</button>
+                                    class="w-100 border-m border-primary text-primary bg-white rounded-5 p-1">Yes</button>
                             </div>
-                            <div class="col">
+                            <div class="col-12 col-md-6">
                                 <button
-                                    class="col-md-12 border-m border-primary text-primary bg-white rounded-5 p-1">No,
+                                    class="w-100 border-m border-primary text-primary bg-white rounded-5 p-1">No,
                                     but I'm open</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card col-md-12 align-self-start shadow-sm mb-3">
+                <div class="card align-self-start shadow-sm mb-3">
                     <div class="card-body d-flex">
                         <img style="border-radius:25px;" width="50" height="50"
                             src="assets/images/user/<?php echo $_SESSION['profile']; ?>" alt="Title" />
@@ -71,7 +71,7 @@ $comment = "";
                             data-bs-toggle="modal" data-bs-target="#newPost" readonly>
                     </div>
 
-                    <div class="d-flex">
+                    <div class="d-flex ms-5">
                         <p class="card-text col-md-4 me-1 text-center"><i
                                 class="fa fa-image text-primary"></i>&nbsp;&nbsp;Media</p>
                         <p class="card-text col-md-4 me-1 text-center"><i
@@ -82,7 +82,7 @@ $comment = "";
                     </div>
                 </div>
                 <!-- all posts comes here! -->
-                <div class="card col-md-12 align-self-start shadow-sm mb-3">
+                <div class="card align-self-start shadow-sm mb-3">
                     <div class="p-3">
                         <div class="d-flex justify-content-between w-100">
                             <div class="d-flex align-items-center">
@@ -126,7 +126,6 @@ $comment = "";
                     </div>
                 </div>
             </div>
-
             <div class="card col-md-3 align-self-start shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">

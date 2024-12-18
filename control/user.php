@@ -7,6 +7,9 @@ require_once __DIR__ . "/../model/skills.php";
 require_once __DIR__ . "/../model/degree.php";
 require_once __DIR__ . "/../model/field.php";
 require_once __DIR__ . "/../model/user_skill.php";
+require_once __DIR__ . "/../model/notification.php";
+require_once __DIR__ . "/../model/follow_request.php";
+require_once __DIR__ . "/../model/follower.php";
 
 class UserController extends Controller
 {
@@ -17,6 +20,9 @@ class UserController extends Controller
     private $degreeModel;
     private $fieldModel;
     private $userSkillModel;
+    private $notificationModel;
+    private $followRequestModel;
+    private $followerModel;
 
     public function __construct()
     {
@@ -28,6 +34,9 @@ class UserController extends Controller
         $this->userSkillModel = new UserSkillModel();   
         $this->degreeModel = new DegreeModel();
         $this->fieldModel = new FieldModel();
+        $this->notificationModel = new NotificationModel();
+        $this->followRequestModel = new FollowRequestModel();
+        $this->followerModel = new FollowerModel(); 
     }
 
     public function login()
@@ -91,6 +100,11 @@ class UserController extends Controller
         $educations = $this->educationModel->getEducation($_SESSION["id"]);
         $uniModle = $this->universityModel;
         include_once __DIR__ . "/../view/profile.php";
+    }
+
+    public function searchResults() {
+        $this->initNav();
+        include_once __DIR__ . "/../view/result.php";
     }
 
     public function skills()
@@ -190,5 +204,71 @@ class UserController extends Controller
             }   
             echo ']';
         }
+    }
+
+    public function notifications() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $user_id = $_POST['user_id'];
+            $notifications = $this->notificationModel->getNotificationCount($user_id);
+            $count = 0;
+            while ($notification = $notifications->fetch_assoc()) {
+                $count = $notification['count'];
+            }
+            echo "[" . json_encode(["notification" => ["count" => $count]]) . "]";
+        }
+    }
+
+    public function followUser() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $user_id = $_POST["user_id"];
+            $this->followRequestModel->createNewFollowRequest($user_id, $_SESSION['id']);
+            $insert_id = $this->followRequestModel->insert_id();
+            $this->notificationModel->createNewNotification($user_id, $insert_id, 'follow');
+        }
+    }
+
+    public function showNotifications() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $user_id = $_POST['user_id'];
+            $notifications = $this->notificationModel->getAllNotifications($user_id);
+            echo '[';
+            while ($notification = $notifications->fetch_assoc()) {
+                if ($notification['evt_type'] == 'follow') {
+                    $followRequests = $this->followRequestModel->getFollowRequest($notification['evt_data']);
+                    while ($followRequest = $followRequests->fetch_assoc()) {
+                        $users = $this->userModel->getUserInfo($followRequest['request_id']);
+                        while ($user = $users->fetch_assoc()) {
+                            echo "follow<>" . ucfirst($user['first']) . " " . ucfirst($user['last']) . "<>" . $user['profile'] . "<>" . $notification['evt_data'] . "<>" .  $notification['evt_type'] . "<>" . $notification["id"];
+                        }
+                    }
+                    echo '<#>';
+                }
+                echo '<@>';
+            }
+            echo ']';
+        }
+    }
+
+    public function acceptFollow() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $evt_data = $_POST['evt_data'];
+            $evt_type = $_POST['evt_type'];
+            $nid = $_POST['nid'];
+            if ($evt_type == 'follow') {
+                $followRequests = $this->followRequestModel->getFollowRequest($evt_data);
+                while ($followRequest = $followRequests->fetch_assoc()) {
+                    $users = $this->userModel->getUserInfo($followRequest['request_id']);
+                    while ($user = $users->fetch_assoc()) {
+                        $this->followerModel->createNewFollower($_SESSION['id'], $user['id']);
+                        $this->followRequestModel->deleteFollowRequest($evt_data);
+                        $this->notificationModel->deleteNotification($nid);
+                    }
+                }
+            }
+        }
+    }
+
+    public function ignoreFollow() {
+
     }
 }

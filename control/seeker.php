@@ -1,8 +1,14 @@
 <?php
 require_once __DIR__ . "/user.php";
+require_once __DIR__ ."/../model/user.php";
+require_once __DIR__ ."/../model/follow_request.php";
+require_once __DIR__ ."/../model/notification.php";
 
 class SeekerController extends UserController {
- 
+    private $userModel;
+    private $followRequestModel;
+    private $notificationModel;
+
     public function __construct() {
         parent::__construct();
         $this->initNav();
