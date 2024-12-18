@@ -19,7 +19,8 @@ class UserModel extends Model {
             nic VARCHAR(20) UNIQUE,
             role ENUM('seeker', 'provider', 'admin'),
             status ENUM('Open', 'Hire', 'None') DEFAULT 'None',
-            headline VARCHAR(512) default 'N/A'
+            headline VARCHAR(512) default 'N/A',
+            show_school ENUM('show', 'hide') DEFAULT 'show'
         );
     ";
     private $insert_user = "INSERT INTO `user` (first, last, username, password, email, contact, gender, dob, address, profile, nic, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -29,7 +30,8 @@ class UserModel extends Model {
     private $get_all = "SELECT * FROM `user`";
     private $user_count = "SELECT COUNT(*) as count FROM `user`";
     private $user_info = "SELECT * FROM `user` WHERE id = ?";
-    private $update_headline = "UPDATE `user` SET headline = ? WHERE id = ?";
+    private $update_user = "UPDATE `user` SET first = ?, last = ?, headline = ?, address = ?, show_school = ? WHERE id = ?";
+    private $search_query = "SELECT * FROM `user` WHERE (first LIKE ? OR first LIKE ? OR first LIKE ? OR last LIKE ? OR last LIKE ? OR last LIKE ?) AND NOT role = 'admin';";
 
     public function __construct() {
         parent::__construct();
@@ -71,7 +73,21 @@ class UserModel extends Model {
         return $this->fetch($this->user_info, [$id],"i");
     }
 
-    public function updateHeadline($headline) {
-        $this->update($this->update_headline, [$headline],"s");
+    public function updateSeeker($first, $last, $headline, $address, $show, $id) {
+        $this->update($this->update_user, [$first, $last, $headline, $address, $show, $id],"sssssi");
+    }
+
+    public function searchUsersByQuery($query) {
+        return $this->fetch(
+            $this->search_query, 
+            [
+                $query.'%',
+                '%'.$query,
+                '%'.$query.'%',
+                $query.'%',
+                '%'.$query,
+                '%'.$query.'%'
+            ],
+            "ssssss");
     }
 }

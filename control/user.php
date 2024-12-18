@@ -145,17 +145,50 @@ class UserController extends Controller
             $description = $_POST['description'];
             $skills = $_POST['skills'];
             $skills = explode(',', $skills);
+            $uni_id = 0;
+            $unis = $this->universityModel->getUniId($school);
+            while ($uni = $unis->fetch_assoc()) {
+                $uni_id = $uni['id'];
+            }
             foreach ($skills as $skill) {
                 if ($skill){
                     $this->userSkillModel->createNewSkill($_SESSION['id'], $skill);
                 }
             }
             try {
-                $this->educationModel->createNewEducation($_SESSION['id'], $school, $degree, $field, $start_month, $start_year, $end_month, $end_year, $grade, $activites, $description);    
+                $this->educationModel->createNewEducation($_SESSION['id'], $uni_id, $degree, $field, $start_month, $start_year, $end_month, $end_year, $grade, $activites, $description);    
                 echo "[" . $this->educationModel->insert_id() . "]";
             } catch (mysqli_sql_exception $e) {
                 echo $e;
             }
+        }
+    }
+
+    public function updateSeeker() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $first = $_POST['first'];
+            $last  = $_POST['last'];
+            $headline = $_POST['headline'];
+            $show = $_POST['show-school'];
+            $address = $_POST['address'];
+
+            $this->userModel->updateSeeker($first, $last, $headline, $address, $show, $_SESSION['id']);
+        }
+        $this->redirect('/seeker/profile');
+    }
+
+    public function findUsers() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $query = $_POST['query'];
+            $users = $this->userModel->searchUsersByQuery($query);
+            echo '[';
+            while ($user = $users->fetch_assoc()) {
+                foreach($user as $key => $value) {
+                    echo $value . '<#>';
+                }
+                echo '<@>';
+            }   
+            echo ']';
         }
     }
 }

@@ -19,6 +19,7 @@ $router->addRoute("GET", "/contact"         , [HomeController::class    , "conta
 $router->addRoute("GET", "/login"           , [UserController::class    , "login"           ]);
 $router->addRoute("GET", "/logout"          , [UserController::class    , "logout"          ]);
 $router->addRoute("GET", "/register"        , [UserController::class    , "register"        ]);
+$router->addRoute("GET", "/user/connection" , [SeekerController::class  , "connection"      ]);
 $router->addRoute("GET", "/seeker"          , [SeekerController::class  , "index"           ]);
 $router->addRoute("GET", "/seeker/network"  , [SeekerController::class  , "network"         ]);
 $router->addRoute("GET", "/seeker/job"      , [SeekerController::class  , "job"             ]);
@@ -49,6 +50,8 @@ $router->addRoute("POST", "/degree/add"     , [AdminController::class   , "creat
 $router->addRoute("POST", "/degree/del"     , [AdminController::class   , "removeDegree"     ]);
 $router->addRoute("POST", "/field/add"      , [AdminController::class   , "createField"      ]);
 $router->addRoute("POST", "/field/del"      , [AdminController::class   , "removeField"      ]);
+$router->addRoute("POST", "/profile/update" , [UserController::class    , "updateSeeker"     ]);
+$router->addRoute("POST", "/search/global"  , [UserController::class    , "findUsers"        ]);
 
 include_once __DIR__ ."/header.php";
 $router->resolveRoute($request);

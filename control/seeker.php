@@ -28,4 +28,8 @@ class SeekerController extends UserController {
     public function seekerProfile() {
         $this->profile();
     }
+
+    public function connection() {
+        include_once __DIR__ ."/../view/connection.php";
+    }
 }
