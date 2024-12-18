@@ -1,11 +1,17 @@
 <?php
 require_once __DIR__ . "/../core/request.php";
+require_once __DIR__ . "/../model/follow_request.php";
+require_once __DIR__ . "/../model/notification.php";
+require_once __DIR__ . "/../model/user.php";
 
 ob_start();
 class Controller {
     private $path;
+    private $userModel;
+    private $followRequestModel;
+    private $notificationModel;
 
-    public function __construct() { 
+    public function __construct() {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }

@@ -1,110 +1,147 @@
-<?php 
+<?php
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 ?>
 <div class="container-fluid" style="margin:0; padding;0;">
     <div class=" d-flex justify-content-center">
         <div class="d-flex w-100 justify-content-center">
-            <div class="w-75">
-                <div class="d-flex mt-5 mb-5">
-                    <?php 
-                        $users = $this->userModel->getUserInfo($id);
-                        $user = $users->fetch_assoc();
+            <div class="w-75 mt-5">
+                <div class="row g-3 mt-5 mb-5">
+                    <?php
+                    $users = $this->userModel->getUserInfo($id);
+                    $user = $users->fetch_assoc();
                     ?>
-                    <div class="card align-self-start shadow-sm mt-5 col-md-9 me-2">
-                        <img class="card-img-top" height="240"
-                            src="/assets/images/cover/<?php if ($id == 0) { echo $user_info['cover']; } else { echo $user['cover']; }?>" alt="Title" />
-                        <div class="rounded-circle"
-                            style="margin-left:20px;margin-top:-140px;width: 186px;height: 186px;background:#fff;padding:3px;">
-                            <img class="rounded-circle" width="180" height="180"
-                                src="/assets/images/user/<?php if ($id == 0) { echo $user_info['profile']; } else { echo $user['profile']; }?> ?>" alt="Title" />
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-end">
-                                <button class="btn" style="margin-top:-50px;" data-bs-toggle="modal"
-                                    data-bs-target="#editProfile">
-                                    <i class="fa fa-pencil fs-5"></i>
-                                </button>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <h5 class="card-title">
-                                    <?php if ($id == 0) { 
-                                        echo ucfirst($user_info['first']) . " " . ucfirst($user_info['last']);
-                                    ?>
-                                    <span class=" text-secondary border p-1 pe-2 ps-2 border-secondary rounded-5"
-                                        style="font-size:12px;">
-                                        <i class="fa fa-shield"></i>&nbsp;verify now</span>
-                                    <?php
+                    <div class="align-self-start col-12 col-md-9 mb-3">
+                        <div class="card shadow-sm">
+                            <img class="card-img-top" height="240"
+                                src="/assets/images/cover/<?php if ($id == 0) {
+                                    echo $user_info['cover'];
+                                } else {
+                                    echo $user['cover'];
+                                } ?>"
+                                alt="Title" />
+                            <div class="rounded-circle"
+                                style="margin-left:20px;margin-top:-140px;width: 186px;height: 186px;background:#fff;padding:3px;">
+                                <img class="rounded-circle" width="180" height="180"
+                                    src="/assets/images/user/<?php if ($id == 0) {
+                                        echo $user_info['profile'];
                                     } else {
-                                        echo ucfirst($user['first']) . " " . ucfirst($user['last']);
-                                    } ?>&nbsp;
-                                </h5>
-                                <div class="me-2">
-                                    <div class="w-100">
+                                        echo $user['profile'];
+                                    } ?> ?>"
+                                    alt="Title" />
+                            </div>
+                            <div class="card-body">
+                                <?php
+                                if ($id == 0) {
+                                    ?>
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn" style="margin-top:-50px;" data-bs-toggle="modal"
+                                            data-bs-target="#editProfile">
+                                            <i class="fa fa-pencil fs-5"></i>
+                                        </button>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">
+                                        <span class="col-12 col-md-6">
+                                        <?php if ($id == 0) {
+                                        echo ucfirst($user_info['first']) . " " . ucfirst($user_info['last']);
+                                        ?>
+                                        </span>
+                                        <span class="col-12 col-md-6 text-secondary border p-1 pe-2 ps-2 border-secondary rounded-5"
+                                            style="font-size:12px;">
+                                            <i class="fa fa-shield"></i>&nbsp;verify now</span>
                                         <?php
-                                        $i = 0;
-                                        $user_id = 0;
-                                        if ($id == 0) {
-                                            $user_id = $user_info['id'];
                                         } else {
-                                            $user_id = $user['id'];
-                                        }
-                                        $educations = $this->educationModel->getEducation($user_id);
-                                        while ($education = $educations->fetch_assoc()) {
-                                            $unies = $this->universityModel->getUniversity($education['institude']);
-                                            while ($uni = $unies->fetch_assoc()) {
+                                        ?>
+                                        <span class="col-12 col-md-6">
+                                        <?php
+                                            echo ucfirst($user['first']) . " " . ucfirst($user['last']);
+                                        ?>
+                                        </span>
+                                        <?php
+                                        } 
+                                        ?>
+                                    </h5>
+                                    <div class="me-2">
+                                        <div class="w-100">
+                                            <?php
+                                            $i = 0;
+                                            $user_id = 0;
+                                            if ($id == 0) {
+                                                $user_id = $user_info['id'];
+                                            } else {
+                                                $user_id = $user['id'];
+                                            }
+                                            $educations = $this->educationModel->getEducation($user_id);
+                                            while ($education = $educations->fetch_assoc()) {
+                                                $unies = $this->universityModel->getUniversity($education['institude']);
+                                                while ($uni = $unies->fetch_assoc()) {
+                                                    ?>
+                                                    <div class="d-flex justify-content-between mb-3">
+                                                        <img src="/assets/images/university/<?php echo $uni['logo'] ?>"
+                                                            width="30" height="30" class="border rounded-circle shadow-sm"
+                                                            alt="<?php echo $uni['name'] . " Logo"; ?>">
+                                                        <h6 class="ms-2 fs-6 pt-1"><?php echo $uni['name']; ?></h>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                $i++;
+                                            }
+                                            if ($i == 0 && $id == 0) {
                                                 ?>
-                                                <div class="d-flex justify-content-between mb-3">
-                                                    <img src="/assets/images/university/<?php echo $uni['logo'] ?>" width="30"
-                                                        height="30" class="border rounded-circle shadow-sm"
-                                                        alt="<?php echo $uni['name'] . " Logo"; ?>">
-                                                    <h6 class="ms-2 fs-6 pt-1"><?php echo $uni['name']; ?></h>
-                                                </div>
+                                                <p class="text-wrap text-secondary fs-6  text-end">Please update your
+                                                    education
+                                                    via
+                                                    your
+                                                    profile</p>
                                                 <?php
                                             }
-                                            $i++;
-                                        }
-                                        if ($i == 0) {
                                             ?>
-                                            <p class="text-wrap text-secondary fs-6  text-end">Please update your education
-                                                via
-                                                your
-                                                profile</p>
-                                            <?php
-                                        }
-                                        ?>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-text text-wrap">
-                                <p class="fs-6 d-inline-block text-trancate text-wrap">
-                                    <?php
-                                    if ($id == 0) {
-                                        if ($user_info['headline'] != 'N/A') {
-                                            echo $user_info['headline'];
+                                <div class="card-text text-wrap">
+                                    <p class="fs-6 d-inline-block text-trancate text-wrap">
+                                        <?php
+                                        if ($id == 0) {
+                                            if ($user_info['headline'] != 'N/A') {
+                                                echo $user_info['headline'];
+                                            } else {
+                                                echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                                            }
                                         } else {
-                                            echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                                            if ($user['headline'] != 'N/A') {
+                                                echo $user['headline'];
+                                            } else {
+                                                echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                                            }
                                         }
-                                    } else {
-                                        if ($user['headline'] != 'N/A') {
-                                            echo $user['headline'];
+                                        ?>
+                                    </p>
+                                    <p class="fw-light">
+                                        <?php if ($id == 0) {
+                                            echo $user_info['address'];
                                         } else {
-                                            echo '<span class="text-secondary">Add headlines via edit your profile</span>';
-                                        }
-                                    }
+                                            echo $user['address'];
+                                        } ?>
+                                    </p>
+                                </div>
+                                <?php
+                                if ($id != 0) {
                                     ?>
-                                </p>
-                                <p class="fw-light"><?php if ($id == 0)  { echo $user_info['address']; } else { echo $user['address']; }?></p>
+                                    <div class="card-text d-flex justify-content-start">
+                                        <button class="btn btn-primary rounded-5 me-3"><i
+                                                class="fa fa-plus"></i>&nbsp;Follow</button>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
-                    <div class="card align-self-start mt-5 shadow-sm col-md-3">
-                        <img class="card-img-top" height="100"
-                            src="/assets/images/cover/<?php echo $_SESSION['cover']; ?>" alt="Title" />
-                        <div
-                            style="margin-left:20px;margin-top:-60px;border-radius:60px;width: 120px;height: 120px;background:#fff;padding:4px;">
-                            <img style="border-radius:55px;" width="112" height="112"
-                                src="/assets/images/user/<?php echo $_SESSION['profile']; ?>" alt="Title" />
-                        </div>
+                    <div class="card align-self-start shadow-sm col-md-3 mb-3">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <?php echo ucfirst($_SESSION['fname']) . " " . ucfirst($_SESSION['lname']); ?>&nbsp;<i
