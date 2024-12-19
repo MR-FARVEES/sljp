@@ -197,10 +197,12 @@ class UserController extends Controller
             $users = $this->userModel->searchUsersByQuery($query);
             echo '[';
             while ($user = $users->fetch_assoc()) {
-                foreach($user as $key => $value) {
-                    echo $value . '<#>';
+                if ($user['id'] != $_SESSION['id']) {
+                    foreach($user as $key => $value) {
+                        echo $value . '<#>';
+                    }
+                    echo '<@>';
                 }
-                echo '<@>';
             }   
             echo ']';
         }
@@ -260,6 +262,7 @@ class UserController extends Controller
                     $users = $this->userModel->getUserInfo($followRequest['request_id']);
                     while ($user = $users->fetch_assoc()) {
                         $this->followerModel->createNewFollower($_SESSION['id'], $user['id']);
+                        $this->followerModel->createNewFollower($user['id'], $_SESSION['id']);
                         $this->followRequestModel->deleteFollowRequest($evt_data);
                         $this->notificationModel->deleteNotification($nid);
                     }
@@ -269,6 +272,15 @@ class UserController extends Controller
     }
 
     public function ignoreFollow() {
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $evt_data = $_POST['evt_data'];
+            $evt_type = $_POST['evt_type'];
+            $nid = $_POST['nid'];
 
+            if ($evt_type == 'follow') {
+                $this->followRequestModel->deleteFollowRequest($evt_data);
+                $this->notificationModel->deleteNotification($nid);
+            }
+        }
     }
 }

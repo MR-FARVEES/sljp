@@ -5,8 +5,8 @@ $comment = "";
 <div class="container-fluid mt-5 bg-light">
     <div class="p-5">
         <div class="row g-4">
-            <div class="col-md-3">
-                <div class="card align-self-start shadow-sm">
+            <div class="col-12 col-md-3">
+                <div class="card align-self-start shadow-sm mb-3">
                     <img class="card-img-top" height="100" src="assets/images/cover/<?php echo $_SESSION['cover']; ?>"
                         alt="Title" />
                     <div
@@ -26,13 +26,13 @@ $comment = "";
                         </p>
                     </div>
                 </div>
-                <div class="card me-2 mt-2 shadow-sm align-self-start">
+                <div class="card shadow-sm align-self-start mb-3">
                     <div class="card-body">
                         <h4 class="card-title">Try Premium</h4>
                         <p class="card-text text-wrap">Occupation tags | tag 2 | tag 3 | tag 4</p>
                     </div>
                 </div>
-                <div class="card me-2 mt-2 shadow-sm align-self-start">
+                <div class="card shadow-sm align-self-start">
                     <div class="card-body">
                         <p class="card-text"><i class="fa fa-users"></i>&nbsp;Groups</p>
                         <p class="card-text"><i class="fa fa-calendar"></i>&nbsp;Events</p>
@@ -126,13 +126,11 @@ $comment = "";
                     </div>
                 </div>
             </div>
-            <div class="card col-md-3 align-self-start shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h4 class="card-title">Add your feed</h4>
-                        <i class="fa fa-info-circle fs-5 p-2"></i>
+            <div class="col-12 col-md-3">
+                <div class="card align-self-start shadow-sm">
+                    <div class="card-body p-5">
+
                     </div>
-                    <p class="card-text">Text</p>
                 </div>
             </div>
         </div>

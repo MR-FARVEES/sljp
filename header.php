@@ -73,6 +73,14 @@
                 .collapsed .fa-angle-up {
                         transform: rotate(-180deg);
                 }
+
+                .fa-angle-down {
+                        transition: transform 0.3s ease-in-out;
+                }
+
+                .collapsed .fa-angle-down {
+                        transform: rotate(-180deg);
+                }
         </style>
 </head>
 
