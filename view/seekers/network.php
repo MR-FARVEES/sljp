@@ -1,6 +1,6 @@
 <div class="container-fluid bg-light mt-5 w-100 d-flex justify-content-center">
     <div class="row w-75 g-4 mt-1">
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
             <div class="card">
                 <div class="card-body" id="headingOne">
                     <button
@@ -37,60 +37,80 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-md-8">
-            <div class="card mb-3">
-                <div class="card-header bg-white">
-                    <div class="d-flex">
-                        <h5 class="card-title fw-light">Invitations</h5>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex">
-                            <img src="/assets/images/user/<?php echo $_SESSION['profile']; ?>" width="60" height="60"
-                                class="rounded-circle" alt="">
-                            <div>
-                                <h6 class="fw-light mt-3 ms-3">Newsletter</h6>
-                                <p class="fs-6 ms-3">Alex Xu invited you to subscribe to ByteByteGo Newsletter</p>
-                            </div>
-                        </div>
-                        <div class="d-flex mt-4" style="max-height: 40px;">
-                            <button class="btn border-secondary rounded-5 text-secondary me-2">Ignore</button>
-                            <button class="btn border-primary rounded-5 text-primary">Accept</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="card-header bg-white">
-                    <div class="d-flex justify-content-between">
-                        <h5 class="card-title fw-light">Achieve your goals faster with premium</h5>
-                        <button class="btn btn-close"></button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <button class="btn btn-warning rounded-5 text-danger">Try Premium for LKR0</button><br>
-                    <small>1-month free trial. We’ll remind you 7 days before your trial ends.</small>
-                </div>
-            </div>
+        </div> -->
+        <div class="col-12 col-md-12 min-vh-100">
             <div class="card mb-3">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h6 class="card-title fw-light">People you may know based on your recent activity</h6>
+                    <div>
+                        <?php
+                        $educations = $this->educationModel->getEducation($_SESSION['id']);
+                        $uni_name = "";
+                        $uni_id = 0;
+                        while ($education = $educations->fetch_assoc()) {
+                            $unies = $this->universityModel->getUniversity($education['institude']);
+                            while ($uni = $unies->fetch_assoc()) {
+                                $uni_id = $uni['id'];
+                                ?>
+                                <h6 class="card-title fw-light">People you may know from
+                                    <?php echo $uni['name']; ?>
+                                </h6>
+                                <?php
+                            }
+                        }
+                        ?>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h6 class="card-title fw-light">People you may know from University of Kelaniya Sri Lanka</h6>
+                    <?php
+                    $educations = $this->educationModel->getUsersByInstitude($uni_id);
+                    $row = false;
+                    $count = 0;
+                    while ($education = $educations->fetch_assoc()) {
+                        $users = $this->userModel->getUserInfo($education['user_id']);
+                        while ($user = $users->fetch_assoc()) {
+                            if ($row == false) {
+                                $row = true;
+                                ?>
+                                <div class="row g-3 mb-3">
+                                    <?php
+                            }
+                            if (!$this->followerModel->isFollower($_SESSION['id'], $user['id']) && $_SESSION['id'] != $user['id']) {
+                                ?>
+                                    <div class="col-12 col-md-3">
+                                        <div class="card border-0">
+                                            <div class="card-body">
+                                                <div class=" d-flex justify-content-center">
+                                                    <img src="/assets/images/user/<?php echo $user['profile']; ?>" width="70"
+                                                        height="70" class="rounded-circle" alt="">
+                                                </div>
+                                                <p class="text-center text-muted fw-bold">
+                                                    <?php echo ucfirst($user['first']) . " " . ucfirst($user['last']); ?>
+                                                </p>
+                                                <div class="d-flex justify-content-center">
+                                                    <a class="btn btn-outline-secondary rounded-5"
+                                                        href="/search/result?id=<?php echo $user['id']; ?>">View full profile</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                            }
+                            if ($count == 2) {
+                                $row = false;
+                                ?>
+                                </div>
+                                <?php
+                            }
+                            $count++;
+                            $count = $count % 4;
+                        }
+                    }
+                    if ($row == true) {
+                        ?>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h6 class="card-title fw-light">Popular people to follow across SLJP</h6>
-                    </div>
-                </div>
+                    <?php
+                    }
+                    ?>
             </div>
         </div>
     </div>
+</div>
 </div>

@@ -1,7 +1,5 @@
-<?php
-$id = isset($_GET['id']) ? $_GET['id'] : 0;
-?>
-<div class="container-fluid" style="margin:0; padding;0;">
+<?php $id = isset($_GET['id']) ? $_GET['id'] : 0; ?>
+<div class="container-fluid" style="margin:0; padding:0;">
     <div class=" d-flex justify-content-center">
         <div class="d-flex w-100 justify-content-center">
             <div class="w-75 mt-5">
@@ -10,8 +8,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                     $users = $this->userModel->getUserInfo($id);
                     $user = $users->fetch_assoc();
                     ?>
-                    <div class="align-self-start col-12 col-md-9 mb-3">
-                        <div class="card shadow-sm">
+                    <div class="align-self-start col-12 col-md-8 mb-3">
+                        <div class="card shadow-sm mb-3">
                             <img class="card-img-top" height="240" src="/assets/images/cover/<?php if ($id == 0) {
                                 echo $user_info['cover'];
                             } else {
@@ -84,11 +82,9 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                                             }
                                             if ($i == 0 && $id == 0) {
                                                 ?>
-                                                <p class="text-wrap text-secondary fs-6  text-end">Please update your
-                                                    education
-                                                    via
-                                                    your
-                                                    profile</p>
+                                                <p class="text-wrap text-secondary fs-6  text-end">
+                                                    There is no Education
+                                                </p>
                                                 <?php
                                             }
                                             ?>
@@ -102,13 +98,13 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                                             if ($user_info['headline'] != 'N/A') {
                                                 echo $user_info['headline'];
                                             } else {
-                                                echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                                                echo '<span class="text-secondary">No headlines</span>';
                                             }
                                         } else {
                                             if ($user['headline'] != 'N/A') {
                                                 echo $user['headline'];
                                             } else {
-                                                echo '<span class="text-secondary">Add headlines via edit your profile</span>';
+                                                echo '<span class="text-secondary">No headlines</span>';
                                             }
                                         }
                                         ?>
@@ -124,34 +120,195 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                                 <?php
                                 if ($id != 0) {
                                     ?>
-                                    <div class="card-text d-flex justify-content-start">
-                                        <input type="hidden" id="follow_id" value="<?php echo $user['id']; ?>">
-                                        <button id="follow" class="btn btn-primary rounded-5 me-3"><i
-                                                class="fa fa-plus"></i>&nbsp;Follow</button>
-                                    </div>
+                                    <p class="text-muted"><i class="fa fa-users"></i>&nbsp;<?php
+                                    $followers = $this->followerModel->getFollowerCount($user['id']);
+                                    while ($follower = $followers->fetch_assoc()) {
+                                        echo $follower['count'];
+                                    }
+                                    ?> followers</p>
+                                    <?php
+                                    if (!$this->followerModel->isFollower($_SESSION['id'], $user['id'])) {
+                                        ?>
+                                        <div class="card-text d-flex justify-content-start">
+                                            <input type="hidden" id="follow_id" value="<?php echo $user['id']; ?>">
+                                            <button id="follow" class="btn btn-primary rounded-5 me-3"><i
+                                                    class="fa fa-plus"></i>&nbsp;Follow</button>
+                                        </div>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <p class="text-muted"><i class="fa fa-users"></i>&nbsp;<?php
+                                    $followers = $this->followerModel->getFollowerCount($_SESSION['id']);
+                                    while ($follower = $followers->fetch_assoc()) {
+                                        echo $follower['count'];
+                                    }
+                                    ?> followers</p>
                                     <?php
                                 }
                                 ?>
                             </div>
                         </div>
-                    </div>
-                    <div class="align-self-start  col-md-3 mb-3">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <?php echo ucfirst($_SESSION['fname']) . " " . ucfirst($_SESSION['lname']); ?>&nbsp;<i
-                                        class="fa fa-shield text-secondary"></i>
-                                </h5>
-                                <p class="card-text text-wrap">
-
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-body p-4">
+                                <h5 class="card-title">Description</h5>
+                                <p class="card-text">
+                                    <?php
+                                    $user_id = 0;
+                                    if ($id != 0) {
+                                        $user_id = $user['id'];
+                                    } else {
+                                        $user_id = $user_info['id'];
+                                    }
+                                    $educations = $this->educationModel->getEducation($user_id);
+                                    while ($education = $educations->fetch_assoc()) {
+                                        if ($education['description'] == 'N/A') {
+                                            echo 'Not updated';
+                                        } else {
+                                            echo $education['description'];
+                                        }
+                                    }
+                                    ?>
                                 </p>
                             </div>
+                        </div>
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-body p-4">
+                                <h5 class="card-title">Education</h5>
+                                <div class="card-text p-2">
+                                    <?php
+                                    $user_id = 0;
+                                    if ($id != 0) {
+                                        $user_id = $user['id'];
+                                    } else {
+                                        $user_id = $user_info['id'];
+                                    }
+                                    $i = 0;
+                                    $educations = $this->educationModel->getEducation($user_id);
+                                    while ($education = $educations->fetch_assoc()) {
+                                        $uni = null;
+                                        $universities = $this->universityModel->getUniversity($education['institude']);
+                                        while ($university = $universities->fetch_assoc()) {
+                                            $uni = $university;
+                                        }
+                                        ?>
+                                        <div class="d-flex">
+                                            <img src="/assets/images/university/<?php echo $uni['logo']; ?>" width="70"
+                                                height="70" alt="">
+                                            <div class="ms-3 p-0">
+                                                <p class="m-0 p-0fs-5 fw-bold"><?php echo $uni['name']; ?></p>
+                                                <p class="m-0 p-0"><?php echo $education['degree']; ?></p>
+                                                <p class="m-0 p-0 text-muted">
+                                                    <?php
+                                                    echo DateTime::createFromFormat('!m', $education['smonth'])->format('M') .
+                                                        " " . $education['syear'] . " - " . DateTime::createFromFormat('!m', $education['emonth'])->format('M') . " " . $education['eyear'];
+                                                    ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        $i++;
+                                    }
+                                    if ($i == 0)
+                                        echo '<p>Not updated</p>';
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-body p-4">
+                                <h5 class="card-title">Education</h5>
+                                <div class="card-text">
+                                    <?php
+                                    $user_id = 0;
+                                    if ($id != 0) {
+                                        $user_id = $user['id'];
+                                    } else {
+                                        $user_id = $user_info['id'];
+                                    }
+                                    $count = 0;
+                                    $row = false;
+                                    $skills = $this->userSkillModel->getAllSkills($user_id);
+                                    while ($skill = $skills->fetch_assoc()) {
+                                        if (!$row) {
+                                            $row = true;
+                                            ?>
+                                            <div class="row g-3">
+                                                <?php
+                                        }
+                                        ?>
+                                            <div class="col-12 col-md-4">
+                                                <p class="rounded-5 bg-primary text-white text-center">
+                                                    <?php echo $skill['skill']; ?>
+                                                </p>
+                                            </div>
+                                            <?php
+                                            if ($count == 2) {
+                                                $row = false;
+                                                ?>
+                                            </div>
+                                            <?php
+                                            }
+                                            $count++;
+                                            $count = $count % 3;
+                                    }
+                                    if ($row) {
+                                        ?>
+                                    </div>
+                                    <?php
+                                    }
+                                    ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="align-self-start  col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                People you may know
+                            </h6>
+                            <p class="card-text text-wrap">
+                                <?php
+                                $educations = $this->educationModel->getEducation($_SESSION['id']);
+                                $uni_id = 0;
+                                while ($education = $educations->fetch_assoc()) {
+                                    $unies = $this->universityModel->getUniversity($education['institude']);
+                                    while ($uni = $unies->fetch_assoc()) {
+                                        $uni_id = $uni['id'];
+                                    }
+                                }
+                                $educations = $this->educationModel->getUsersByInstitude($uni_id);
+                                while ($education = $educations->fetch_assoc()) {
+                                    $users = $this->userModel->getUserInfo($education['user_id']);
+                                    while ($user = $users->fetch_assoc()) {
+                                        if (!$this->followerModel->isFollower($_SESSION['id'], $user['id']) && $_SESSION['id'] != $user['id']) {
+                                            ?>
+                                        <div class="d-flex p-3">
+                                            <img src="/assets/images/user/<?php echo $user['profile']; ?>" width="50" height="50"
+                                                class="rounded-circle" alt="">
+                                            <div class="ms-2 pt-1">
+                                                <strong>
+                                                    <?php echo ucfirst($user['first']) . " " . ucfirst($user['last']); ?>
+                                                </strong><br>
+                                                <small class="text-muted"><?php echo $user['headline']; ?></small><br>
+                                                <a class="btn btn-outline-secondary rounded-5 mt-2"
+                                                    href="/search/result?id=<?php echo $user['id']; ?>">View full profile</a>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        }
+                                    }
+                                }
+                                ?>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="editProfile">
@@ -193,7 +350,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                                 $universities = $this->universityModel->getUniversity($education['institude']);
                                 while ($university = $universities->fetch_assoc()) {
                                     ?>
-                                    <option value="<?php echo $university['name'] ?>"><?php echo $university['name'] ?></option>
+                                    <option value="<?php echo $university['name'] ?>"><?php echo $university['name'] ?>
+                                    </option>
                                     <?php
                                     $i++;
                                 }
@@ -208,7 +366,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                     </div>
                     <div class="mb-3">
                         <button type="button" class="btn text-primary btn-hover" data-bs-toggle="modal"
-                            data-bs-target="#editEducation"><i class="fa fa-plus"></i>&nbsp;Add new education</button>
+                            data-bs-target="#editEducation"><i class="fa fa-plus"></i>&nbsp;Add new
+                            education</button>
                     </div>
                     <div class="mb-3">
                         <input type="checkbox" id="show-school" name="show-school" value="show" class="form-check-input"
@@ -357,7 +516,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                     <textarea id="edu-description" class="form-control" rows="3"></textarea>
                 </div>
                 <h5>Skills</h5>
-                <p>We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.
+                <p>We recommend adding your top 5 used in this experience. They’ll also appear in your Skills
+                    section.
                 </p>
                 <div id="manage-skills">
                     <div id="skills">

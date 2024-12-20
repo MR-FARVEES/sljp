@@ -1,4 +1,4 @@
-<div class="container-fluid mt-5 w-100">
+<div class="container-fluid mt-5 w-100 min-vh-100">
     <div class="d-flex justify-content-center">
         <div class="card w-50 m-5">
             <div class="card-header bg-white">

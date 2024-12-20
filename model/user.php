@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__ ."/../core/model.php";
+require_once __DIR__ . "/../core/model.php";
 
-class UserModel extends Model {
+class UserModel extends Model
+{
     private $create_user_table = "
         CREATE TABLE IF NOT EXISTS `user` (
             id INT PRIMARY KEY AUTO_INCREMENT,
@@ -32,62 +33,91 @@ class UserModel extends Model {
     private $user_info = "SELECT * FROM `user` WHERE id = ?";
     private $update_user = "UPDATE `user` SET first = ?, last = ?, headline = ?, address = ?, show_school = ? WHERE id = ?";
     private $search_query = "SELECT * FROM `user` WHERE (first LIKE ? OR first LIKE ? OR first LIKE ? OR last LIKE ? OR last LIKE ? OR last LIKE ?) AND NOT role = 'admin';";
+    private $match_headline = "SELECT * FROM `user` WHERE ";
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->Init();
     }
 
-    public function Init() {
+    public function Init()
+    {
         $this->create($this->create_user_table);
     }
 
-    public function createNewUser($first, $last, $username, $password, $email, $contact, $gener, $dob, $address, $profile, $nic, $role) {
+    public function createNewUser($first, $last, $username, $password, $email, $contact, $gener, $dob, $address, $profile, $nic, $role)
+    {
         $this->insert($this->insert_user, [$first, $last, $username, $password, $email, $contact, $gener, $dob, $address, $profile, $nic, $role], "ssssssssssss");
     }
 
-    public function authenticate($username, $password) {
+    public function authenticate($username, $password)
+    {
         return $this->fetch($this->auth_user, [$username, $password], "ss");
     }
 
-    public function updatePassword($id, $password) {
-        $this->update($this->update_password, [$id, $password],"is");
+    public function updatePassword($id, $password)
+    {
+        $this->update($this->update_password, [$id, $password], "is");
     }
 
-    public function deleteUser($id) {
+    public function deleteUser($id)
+    {
         $this->delete($this->delete_user, [$id], "i");
     }
 
-    public function getAllUsers() {
+    public function getAllUsers()
+    {
         return $this->fetch($this->get_all);
     }
 
-    public function count() {
+    public function count()
+    {
         $result = $this->fetch($this->user_count);
         while ($row = $result->fetch_assoc()) {
             return $row["count"];
         }
     }
 
-    public function getUserInfo($id) {
-        return $this->fetch($this->user_info, [$id],"i");
+    public function getUserInfo($id)
+    {
+        return $this->fetch($this->user_info, [$id], "i");
     }
 
-    public function updateSeeker($first, $last, $headline, $address, $show, $id) {
-        $this->update($this->update_user, [$first, $last, $headline, $address, $show, $id],"sssssi");
+    public function updateSeeker($first, $last, $headline, $address, $show, $id)
+    {
+        $this->update($this->update_user, [$first, $last, $headline, $address, $show, $id], "sssssi");
     }
 
-    public function searchUsersByQuery($query) {
+    public function searchUsersByQuery($query)
+    {
         return $this->fetch(
-            $this->search_query, 
+            $this->search_query,
             [
-                $query.'%',
-                '%'.$query,
-                '%'.$query.'%',
-                $query.'%',
-                '%'.$query,
-                '%'.$query.'%'
+                $query . '%',
+                '%' . $query,
+                '%' . $query . '%',
+                $query . '%',
+                '%' . $query,
+                '%' . $query . '%'
             ],
-            "ssssss");
+            "ssssss"
+        );
+    }
+
+    public function getUsersByHeadlineMatching($heads)
+    {
+        $whereClause = [];
+        $params = [];
+        foreach ($heads as $key => $value) {
+            $whereClause[] = 'headline LIKE ?';
+            $params[] = '%' . $value . '%';
+        }
+        $whereClauseString = implode(' OR ', $whereClause);
+        return $this->fetch(
+            $this->match_headline . $whereClauseString,
+            $params,
+            str_repeat('s', count($params))
+        );
     }
 }

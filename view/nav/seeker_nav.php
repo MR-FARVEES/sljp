@@ -53,18 +53,6 @@
                         </li>
                     <?php } ?>
                     <?php
-                    if ($path->getPath() == "/seeker/chat") {
-                        ?>
-                        <li class="nav-item me-2 ms-2">
-                            <a class="nav-link text-primary text-center fw-bold" aria-current="page"
-                                href="/seeker/chat">&nbsp;Chat</a>
-                        </li>
-                    <?php } else { ?>
-                        <li class="nav-item  me-2 ms-2">
-                            <a class="nav-link text-primary" aria-current="page" href="/seeker/chat">Chat</a>
-                        </li>
-                    <?php } ?>
-                    <?php
                     if ($path->getPath() == "/seeker/profile") {
                         ?>
                         <li class="nav-item me-2 ms-2">
@@ -81,7 +69,8 @@
         </div>
         <div class="dropdown col-md-3">
             <input type="hidden" id="nuser_id" value="<?php echo $_SESSION['id']; ?>">
-            <button type="button" id="notification-btn" data-bs-toggle="dropdown" class="btn btn-primary rounded-5 position-relative me-3 ms-2">
+            <button type="button" id="notification-btn" data-bs-toggle="dropdown"
+                class="btn btn-primary rounded-5 position-relative me-3 ms-2">
                 <i class="fa fa-bell"></i>
             </button>
             <div id="notification-view" class="dropdown-menu w-100 mt-2 pt-3 ps-2 pe-2">
@@ -173,29 +162,29 @@
                 $('#fields').append(recent);
             }
         });
-        $('#notification-btn').click(function() {
+        $('#notification-btn').click(function () {
             const id = $('#nuser_id').val();
             const formData = new FormData();
             formData.append('user_id', id);
             $.ajax({
-                url:'/user/follow/request',
-                data:formData,
-                type:'post',
-                contentType:false,
-                processData:false,
-                success:function(response) {
+                url: '/user/follow/request',
+                data: formData,
+                type: 'post',
+                contentType: false,
+                processData: false,
+                success: function (response) {
                     $('#notification-view').empty();
                     const regex = /\[(.*?)\]/g;
                     const matches = response.matchAll(regex);
                     for (const match of matches) {
                         const notifications = [];
-                        $.each(match[1].split('<@>'), function(idx, value) {
+                        $.each(match[1].split('<@>'), function (idx, value) {
                             if (value != '') {
                                 notifications.push(value);
                             }
                         });
-                        $.each(notifications, function(idx, value) {
-                            $.each(value.split('<#>'), function(itm, data) {
+                        $.each(notifications, function (idx, value) {
+                            $.each(value.split('<#>'), function (itm, data) {
                                 if (data) {
                                     const data_info = [];
                                     const followRequestView = $(`
@@ -217,7 +206,7 @@
                                             </div>
                                         </div>
                                     `);
-                                    $.each(data.split('<>'), function(i, v){
+                                    $.each(data.split('<>'), function (i, v) {
                                         if (v) {
                                             data_info.push(v);
                                         }
@@ -231,7 +220,7 @@
                                     followRequestView.find('#profile-name').append(
                                         $(`<p class="fw-bold mt-1 ms-2">${data_info[1]}</p>`)
                                     );
-                                    followRequestView.find('#accept').click(function() {
+                                    followRequestView.find('#accept').click(function () {
                                         const evt_data = followRequestView.find('#evt_data').val();
                                         const evt_type = followRequestView.find('#evt_type').val();
                                         const nid = followRequestView.find('#nid').val();
@@ -240,20 +229,20 @@
                                         formData.append('evt_type', evt_type);
                                         formData.append('nid', nid);
                                         $.ajax({
-                                            url:'/user/follow/add',
-                                            data:formData,
-                                            type:'post',
-                                            contentType:false,
-                                            processData:false,
-                                            success:function(response) {
+                                            url: '/user/follow/add',
+                                            data: formData,
+                                            type: 'post',
+                                            contentType: false,
+                                            processData: false,
+                                            success: function (response) {
                                                 followRequestView.remove();
                                             },
-                                            error:function(xhr, status, error) {
+                                            error: function (xhr, status, error) {
                                                 console.log("ERROR: " + error);
                                             }
                                         });
                                     });
-                                    followRequestView.find('#ignore').click(function() {
+                                    followRequestView.find('#ignore').click(function () {
                                         const evt_data = followRequestView.find('#evt_data').val();
                                         const evt_type = followRequestView.find('#evt_type').val();
                                         const nid = followRequestView.find('#nid').val();
@@ -262,15 +251,15 @@
                                         formData.append('evt_type', evt_type);
                                         formData.append('nid', nid);
                                         $.ajax({
-                                            url:'/user/follow/ignore',
-                                            data:formData,
-                                            type:'post',
-                                            contentType:false,
-                                            processData:false,
-                                            success:function(response) {
+                                            url: '/user/follow/ignore',
+                                            data: formData,
+                                            type: 'post',
+                                            contentType: false,
+                                            processData: false,
+                                            success: function (response) {
                                                 followRequestView.remove();
                                             },
-                                            error:function(xhr, status, error) {
+                                            error: function (xhr, status, error) {
                                                 console.log("ERROR: " + error);
                                             }
                                         });
@@ -283,7 +272,7 @@
                         });
                     }
                 },
-                error:function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.log('ERROR: ' + error);
                 }
             });
@@ -293,12 +282,12 @@
             const id = $('#user_id').val();
             formData.append('user_id', id);
             $.ajax({
-                url:'/user/notification',
-                data:formData,
+                url: '/user/notification',
+                data: formData,
                 type: 'post',
                 contentType: false,
                 processData: false,
-                success:function(response) {
+                success: function (response) {
                     const regex = /\[(.*?)\]/g;
                     const matches = response.matchAll(regex);
                     for (const match of matches) {
@@ -312,10 +301,10 @@
                         if (notifications > 0) {
                             notification_view.text(notifications);
                             $('#notification-btn').append(notification_view);
-                        } 
+                        }
                     }
                 },
-                error:function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.log("ERROR: " + error);
                 }
             });
