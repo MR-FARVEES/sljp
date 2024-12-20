@@ -72,7 +72,15 @@ while ($follower = $followers->fetch_assoc()) {
                         alt="">
                     <h5 class="card-title me-2 pt-1 ps-1"><?php echo ucfirst($user['first']) . " " . ucfirst($user['last']); ?>
                     </h5>
-                    <p class="text-muted text-wrap w-75"><?php echo $user['headline']; ?></p>
+                    <p class="text-muted text-wrap w-75">
+                        <?php
+                        if ($user['headline'] != 'N/A') {
+                            echo $user['headline'];
+                        } else {
+                            echo '<small class="text-muted">No headines&nbsp;&nbsp;</small>';
+                        }
+                        ?>
+                    </p>
                 </div>
                 <hr>
                 <div class="w-100" id="message-container-<?php echo $user['id']; ?>">
@@ -114,21 +122,21 @@ while ($follower = $followers->fetch_assoc()) {
                 $('#send-message-' + id).addClass('disabled');
             }
         });
-        $('[id^=send-message-]').click(function() {
+        $('[id^=send-message-]').click(function () {
             const id = $(this).attr('id').split('-')[2];
             const formData = new FormData();
             formData.append('user_id', id);
-            formData.append('message', $("#text-message-"+id).val());
+            formData.append('message', $("#text-message-" + id).val());
             $.ajax({
-                url:'/user/message/send',
-                data:formData,
-                type:'post',
-                contentType:false,
-                processData:false,
-                success:function(response) {
-                    $("#text-message-"+id).val('');
+                url: '/user/message/send',
+                data: formData,
+                type: 'post',
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    $("#text-message-" + id).val('');
                 },
-                error:function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.log('ERROR: ' + error);
                 }
             });
@@ -140,7 +148,7 @@ while ($follower = $followers->fetch_assoc()) {
                 const idAttr = $(this).attr('id');
                 const existingItem = message_structure.find(item => item.hasOwnProperty(idAttr));
                 if (!existingItem) {
-                    message_structure.push({ [idAttr]: []});
+                    message_structure.push({ [idAttr]: [] });
                 }
                 const myId = $('#user_id').val();
                 const formData = new FormData();
@@ -155,7 +163,7 @@ while ($follower = $followers->fetch_assoc()) {
                         const regex = /\[(.*?)\]/g;
                         const matches = response.matchAll(regex);
                         for (const match of matches) {
-                            $.each(match[1].split('<#>'), function(index, element) {
+                            $.each(match[1].split('<#>'), function (index, element) {
                                 if (element) {
                                     const msg_info = element.split('<>');
                                     const msg_view = $(`
@@ -164,8 +172,7 @@ while ($follower = $followers->fetch_assoc()) {
                                             </div>
                                         </div>
                                     `);
-                                    $.each(message_structure, function(sid, sdata) {
-                                        console.log(sdata[idAttr]);
+                                    $.each(message_structure, function (sid, sdata) {
                                         if (sdata[idAttr]) {
                                             if (!sdata[idAttr].includes(msg_info[0])) {
                                                 sdata[idAttr].push(msg_info[0]);
@@ -176,7 +183,7 @@ while ($follower = $followers->fetch_assoc()) {
                                                     `);
                                                     msg_view.append(`<p class="text-muted text-wrap fs-6" style="margin-left:35px;">${msg_info[3]}</p>`);
                                                     msg_view.find('#profile').append(profile_pic);
-                                                    $('#message-container-'+id).append(msg_view);
+                                                    $('#message-container-' + id).append(msg_view);
                                                 } else {
                                                     const profile_pic = $(`
                                                         <img src="/assets/images/user/${msg_info[6]}" class="rounded-circle me-2" width="30" height="30" >
@@ -184,7 +191,7 @@ while ($follower = $followers->fetch_assoc()) {
                                                     `);
                                                     msg_view.append(`<p class="text-muted text-wrap fs-6" style="margin-left:35px;">${msg_info[3]}</p>`);
                                                     msg_view.find('#profile').append(profile_pic);
-                                                    $('#message-container-'+id).append(msg_view);
+                                                    $('#message-container-' + id).append(msg_view);
                                                 }
                                             }
                                         }
@@ -197,7 +204,7 @@ while ($follower = $followers->fetch_assoc()) {
                         console.log('ERROR: ' + error);
                     }
                 });
-            
+
             });
         }
         setInterval(updateMessages, 1000);

@@ -81,6 +81,11 @@
                 .collapsed .fa-angle-down {
                         transform: rotate(-180deg);
                 }
+
+                .post-hover:hover {
+                        text-decoration: underline !important;
+                        color: blue !important;
+                }
         </style>
 </head>
 

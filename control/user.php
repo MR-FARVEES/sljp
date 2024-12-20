@@ -11,6 +11,7 @@ require_once __DIR__ . "/../model/notification.php";
 require_once __DIR__ . "/../model/follow_request.php";
 require_once __DIR__ . "/../model/follower.php";
 require_once __DIR__ . "/../model/message.php";
+require_once __DIR__ . "/../model/post.php";
 
 class UserController extends Controller
 {
@@ -25,6 +26,7 @@ class UserController extends Controller
     private $followRequestModel;
     private $followerModel;
     private $messageModel;
+    private $postModel;
 
     public function __construct()
     {
@@ -40,6 +42,7 @@ class UserController extends Controller
         $this->followRequestModel = new FollowRequestModel();
         $this->followerModel = new FollowerModel();
         $this->messageModel = new MessageModel();
+        $this->postModel = new PostModel();
     }
 
     public function login()
@@ -74,7 +77,7 @@ class UserController extends Controller
             $role = $_POST["role"];
 
             $count = $this->userModel->count();
-            $filename = "profile-" . $count . ".jpg";
+            $filename = "profile-" . ($count + 1) . ".jpg";
             $upload_path = __DIR__ . "/../assets/images/user/" . $filename;
             move_uploaded_file($_FILES["image"]["tmp_name"], $upload_path);
 
@@ -305,7 +308,7 @@ class UserController extends Controller
             $messages = $this->messageModel->getAllMessages($_SESSION['id'], $user_id);
             echo "[";
             while ($message = $messages->fetch_assoc()) {
-                foreach($message as $key => $value) {
+                foreach ($message as $key => $value) {
                     echo $value . "<>";
                 }
                 $users = $this->userModel->getUserInfo($message['send']);
@@ -324,6 +327,41 @@ class UserController extends Controller
             $user_id = $_POST['user_id'];
             $message = $_POST['message'];
             $this->messageModel->createNewMessage($_SESSION['id'], $user_id, $message, 'text');
+        }
+    }
+
+    public function createPost()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $post_text = $_POST['post_text'];
+            $file = $_FILES['file'];
+            $this->postModel->createNewPost($_SESSION['id'], $post_text);
+            $inser_id = $this->postModel->insert_id();
+            $source = "post-" . $inser_id . ".jpg";
+            $upload = __DIR__ . "/../assets/images/post/" . $source;
+            $this->postModel->updatePost($source, $inser_id);
+            move_uploaded_file($file['tmp_name'], $upload);
+        }
+    }
+
+    public function getAllPosts()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $ids = [$_SESSION['id']];
+            $followers = $this->followerModel->getAllFollowers($_SESSION['id']);
+            while ($follower = $followers->fetch_assoc()) {
+                $ids[] = $follower['follow_id'];
+            }
+            $posts = $this->postModel->getAllPosts($ids);
+            echo '[';
+            while ($post = $posts->fetch_assoc()) {
+                $users = $this->userModel->getUserInfo($post['user_id']);
+                while ($user = $users->fetch_assoc()) {
+                    echo $user['profile'] . "<>" . ucfirst($user['first']) . " " . ucfirst($user['last']) . "<>" . $post['post_text'] . "<>" . $post['post_source'] . "<>" . $post['id'] . '<>' . $user['id'];
+                }
+                echo '<#>';
+            }
+            echo ']';
         }
     }
 }
