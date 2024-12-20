@@ -10,6 +10,7 @@ require_once __DIR__ . "/../model/user_skill.php";
 require_once __DIR__ . "/../model/notification.php";
 require_once __DIR__ . "/../model/follow_request.php";
 require_once __DIR__ . "/../model/follower.php";
+require_once __DIR__ . "/../model/message.php";
 
 class UserController extends Controller
 {
@@ -23,6 +24,7 @@ class UserController extends Controller
     private $notificationModel;
     private $followRequestModel;
     private $followerModel;
+    private $messageModel;
 
     public function __construct()
     {
@@ -31,12 +33,13 @@ class UserController extends Controller
         $this->educationModel = new EducationModel();
         $this->universityModel = new UniversityModel();
         $this->skillModel = new SkillModel();
-        $this->userSkillModel = new UserSkillModel();   
+        $this->userSkillModel = new UserSkillModel();
         $this->degreeModel = new DegreeModel();
         $this->fieldModel = new FieldModel();
         $this->notificationModel = new NotificationModel();
         $this->followRequestModel = new FollowRequestModel();
-        $this->followerModel = new FollowerModel(); 
+        $this->followerModel = new FollowerModel();
+        $this->messageModel = new MessageModel();
     }
 
     public function login()
@@ -102,7 +105,8 @@ class UserController extends Controller
         include_once __DIR__ . "/../view/profile.php";
     }
 
-    public function searchResults() {
+    public function searchResults()
+    {
         $this->initNav();
         include_once __DIR__ . "/../view/result.php";
     }
@@ -117,7 +121,8 @@ class UserController extends Controller
         echo "]";
     }
 
-    public function universities() {
+    public function universities()
+    {
         echo "[";
         $unis = $this->universityModel->getAllUniversities();
         while ($row = $unis->fetch_assoc()) {
@@ -126,7 +131,8 @@ class UserController extends Controller
         echo "]";
     }
 
-    public function degrees() {
+    public function degrees()
+    {
         echo "[";
         $degrees = $this->degreeModel->getAllDegrees();
         while ($row = $degrees->fetch_assoc()) {
@@ -135,7 +141,8 @@ class UserController extends Controller
         echo "]";
     }
 
-    public function fields() {
+    public function fields()
+    {
         echo "[";
         $fields = $this->fieldModel->getAllFields();
         while ($row = $fields->fetch_assoc()) {
@@ -165,12 +172,12 @@ class UserController extends Controller
                 $uni_id = $uni['id'];
             }
             foreach ($skills as $skill) {
-                if ($skill){
+                if ($skill) {
                     $this->userSkillModel->createNewSkill($_SESSION['id'], $skill);
                 }
             }
             try {
-                $this->educationModel->createNewEducation($_SESSION['id'], $uni_id, $degree, $field, $start_month, $start_year, $end_month, $end_year, $grade, $activites, $description);    
+                $this->educationModel->createNewEducation($_SESSION['id'], $uni_id, $degree, $field, $start_month, $start_year, $end_month, $end_year, $grade, $activites, $description);
                 echo "[" . $this->educationModel->insert_id() . "]";
             } catch (mysqli_sql_exception $e) {
                 echo $e;
@@ -178,10 +185,11 @@ class UserController extends Controller
         }
     }
 
-    public function updateSeeker() {
+    public function updateSeeker()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $first = $_POST['first'];
-            $last  = $_POST['last'];
+            $last = $_POST['last'];
             $headline = $_POST['headline'];
             $show = $_POST['show-school'];
             $address = $_POST['address'];
@@ -191,22 +199,26 @@ class UserController extends Controller
         $this->redirect('/seeker/profile');
     }
 
-    public function findUsers() {
+    public function findUsers()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $query = $_POST['query'];
             $users = $this->userModel->searchUsersByQuery($query);
             echo '[';
             while ($user = $users->fetch_assoc()) {
-                foreach($user as $key => $value) {
-                    echo $value . '<#>';
+                if ($user['id'] != $_SESSION['id']) {
+                    foreach ($user as $key => $value) {
+                        echo $value . '<#>';
+                    }
+                    echo '<@>';
                 }
-                echo '<@>';
-            }   
+            }
             echo ']';
         }
     }
 
-    public function notifications() {
+    public function notifications()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user_id = $_POST['user_id'];
             $notifications = $this->notificationModel->getNotificationCount($user_id);
@@ -218,7 +230,8 @@ class UserController extends Controller
         }
     }
 
-    public function followUser() {
+    public function followUser()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user_id = $_POST["user_id"];
             $this->followRequestModel->createNewFollowRequest($user_id, $_SESSION['id']);
@@ -227,7 +240,8 @@ class UserController extends Controller
         }
     }
 
-    public function showNotifications() {
+    public function showNotifications()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user_id = $_POST['user_id'];
             $notifications = $this->notificationModel->getAllNotifications($user_id);
@@ -238,7 +252,7 @@ class UserController extends Controller
                     while ($followRequest = $followRequests->fetch_assoc()) {
                         $users = $this->userModel->getUserInfo($followRequest['request_id']);
                         while ($user = $users->fetch_assoc()) {
-                            echo "follow<>" . ucfirst($user['first']) . " " . ucfirst($user['last']) . "<>" . $user['profile'] . "<>" . $notification['evt_data'] . "<>" .  $notification['evt_type'] . "<>" . $notification["id"];
+                            echo "follow<>" . ucfirst($user['first']) . " " . ucfirst($user['last']) . "<>" . $user['profile'] . "<>" . $notification['evt_data'] . "<>" . $notification['evt_type'] . "<>" . $notification["id"];
                         }
                     }
                     echo '<#>';
@@ -249,7 +263,8 @@ class UserController extends Controller
         }
     }
 
-    public function acceptFollow() {
+    public function acceptFollow()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $evt_data = $_POST['evt_data'];
             $evt_type = $_POST['evt_type'];
@@ -260,6 +275,7 @@ class UserController extends Controller
                     $users = $this->userModel->getUserInfo($followRequest['request_id']);
                     while ($user = $users->fetch_assoc()) {
                         $this->followerModel->createNewFollower($_SESSION['id'], $user['id']);
+                        $this->followerModel->createNewFollower($user['id'], $_SESSION['id']);
                         $this->followRequestModel->deleteFollowRequest($evt_data);
                         $this->notificationModel->deleteNotification($nid);
                     }
@@ -268,7 +284,46 @@ class UserController extends Controller
         }
     }
 
-    public function ignoreFollow() {
+    public function ignoreFollow()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $evt_data = $_POST['evt_data'];
+            $evt_type = $_POST['evt_type'];
+            $nid = $_POST['nid'];
 
+            if ($evt_type == 'follow') {
+                $this->followRequestModel->deleteFollowRequest($evt_data);
+                $this->notificationModel->deleteNotification($nid);
+            }
+        }
+    }
+
+    public function allMessages()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $user_id = $_POST['user_id'];
+            $messages = $this->messageModel->getAllMessages($_SESSION['id'], $user_id);
+            echo "[";
+            while ($message = $messages->fetch_assoc()) {
+                foreach($message as $key => $value) {
+                    echo $value . "<>";
+                }
+                $users = $this->userModel->getUserInfo($message['send']);
+                while ($user = $users->fetch_assoc()) {
+                    echo $user['profile'] . '<>' . ucfirst($user['first']) . ' ' . ucfirst($user['last']);
+                }
+                echo "<#>";
+            }
+            echo "]";
+        }
+    }
+
+    public function sendMessage()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $user_id = $_POST['user_id'];
+            $message = $_POST['message'];
+            $this->messageModel->createNewMessage($_SESSION['id'], $user_id, $message, 'text');
+        }
     }
 }

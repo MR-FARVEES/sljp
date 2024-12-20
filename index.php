@@ -19,7 +19,7 @@ $router->addRoute("GET", "/contact"             , [HomeController::class    , "c
 $router->addRoute("GET", "/login"               , [UserController::class    , "login"               ]);
 $router->addRoute("GET", "/logout"              , [UserController::class    , "logout"              ]);
 $router->addRoute("GET", "/register"            , [UserController::class    , "register"            ]);
-$router->addRoute("GET", "/search/result"  , [UserController::class    , "searchResults"       ]);
+$router->addRoute("GET", "/search/result"       , [UserController::class    , "searchResults"       ]);
 $router->addRoute("GET", "/user/connection"     , [SeekerController::class  , "connection"          ]);
 $router->addRoute("GET", "/seeker"              , [SeekerController::class  , "index"               ]);
 $router->addRoute("GET", "/seeker/network"      , [SeekerController::class  , "network"             ]);
@@ -58,6 +58,9 @@ $router->addRoute("POST", "/user/notification"  , [UserController::class    , "n
 $router->addRoute("POST", "/user/follow"        , [UserController::class    , "followUser"          ]);
 $router->addRoute("POST", "/user/follow/request", [UserController::class    , "showNotifications"   ]);
 $router->addRoute("POST", "/user/follow/add"    , [UserController::class    , "acceptFollow"        ]);
+$router->addRoute("POST", "/user/follow/ignore" , [UserController::class    , "ignoreFollow"        ]);
+$router->addRoute("POST", "/user/message/all"   , [UserController::class    , "allMessages"         ]);
+$router->addRoute("POST", "/user/message/send"  , [UserController::class    , "sendMessage"         ]);
 
 include_once __DIR__ ."/header.php";
 $router->resolveRoute($request);

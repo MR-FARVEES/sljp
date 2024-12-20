@@ -12,22 +12,18 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                     ?>
                     <div class="align-self-start col-12 col-md-9 mb-3">
                         <div class="card shadow-sm">
-                            <img class="card-img-top" height="240"
-                                src="/assets/images/cover/<?php if ($id == 0) {
-                                    echo $user_info['cover'];
-                                } else {
-                                    echo $user['cover'];
-                                } ?>"
-                                alt="Title" />
+                            <img class="card-img-top" height="240" src="/assets/images/cover/<?php if ($id == 0) {
+                                echo $user_info['cover'];
+                            } else {
+                                echo $user['cover'];
+                            } ?>" alt="Title" />
                             <div class="rounded-circle"
                                 style="margin-left:20px;margin-top:-140px;width: 186px;height: 186px;background:#fff;padding:3px;">
-                                <img class="rounded-circle" width="180" height="180"
-                                    src="/assets/images/user/<?php if ($id == 0) {
-                                        echo $user_info['profile'];
-                                    } else {
-                                        echo $user['profile'];
-                                    } ?> ?>"
-                                    alt="Title" />
+                                <img class="rounded-circle" width="180" height="180" src="/assets/images/user/<?php if ($id == 0) {
+                                    echo $user_info['profile'];
+                                } else {
+                                    echo $user['profile'];
+                                } ?> ?>" alt="Title" />
                             </div>
                             <div class="card-body">
                                 <?php
@@ -45,24 +41,21 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                                 <div class="d-flex justify-content-between">
                                     <h5 class="card-title">
                                         <span class="col-12 col-md-6">
-                                        <?php if ($id == 0) {
-                                        echo ucfirst($user_info['first']) . " " . ucfirst($user_info['last']);
-                                        ?>
-                                        </span>
-                                        <span class="col-12 col-md-6 text-secondary border p-1 pe-2 ps-2 border-secondary rounded-5"
-                                            style="font-size:12px;">
-                                            <i class="fa fa-shield"></i>&nbsp;verify now</span>
-                                        <?php
-                                        } else {
-                                        ?>
-                                        <span class="col-12 col-md-6">
-                                        <?php
-                                            echo ucfirst($user['first']) . " " . ucfirst($user['last']);
-                                        ?>
-                                        </span>
-                                        <?php
-                                        } 
-                                        ?>
+                                            <?php if ($id == 0) {
+                                                echo ucfirst($user_info['first']) . " " . ucfirst($user_info['last']);
+                                                ?>
+                                            </span>
+                                            <?php
+                                            } else {
+                                                ?>
+                                            <span class="col-12 col-md-6">
+                                                <?php
+                                                echo ucfirst($user['first']) . " " . ucfirst($user['last']);
+                                                ?>
+                                            </span>
+                                            <?php
+                                            }
+                                            ?>
                                     </h5>
                                     <div class="me-2">
                                         <div class="w-100">
@@ -132,7 +125,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                                 if ($id != 0) {
                                     ?>
                                     <div class="card-text d-flex justify-content-start">
-                                        <button class="btn btn-primary rounded-5 me-3"><i
+                                        <input type="hidden" id="follow_id" value="<?php echo $user['id']; ?>">
+                                        <button id="follow" class="btn btn-primary rounded-5 me-3"><i
                                                 class="fa fa-plus"></i>&nbsp;Follow</button>
                                     </div>
                                     <?php
@@ -141,15 +135,17 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                             </div>
                         </div>
                     </div>
-                    <div class="card align-self-start shadow-sm col-md-3 mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <?php echo ucfirst($_SESSION['fname']) . " " . ucfirst($_SESSION['lname']); ?>&nbsp;<i
-                                    class="fa fa-shield text-secondary"></i>
-                            </h5>
-                            <p class="card-text text-wrap">
+                    <div class="align-self-start  col-md-3 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <?php echo ucfirst($_SESSION['fname']) . " " . ucfirst($_SESSION['lname']); ?>&nbsp;<i
+                                        class="fa fa-shield text-secondary"></i>
+                                </h5>
+                                <p class="card-text text-wrap">
 
-                            </p>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -275,8 +271,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                     <div class="dropdown">
                         <label for="edu-field">Field of Study*</label>
                         <input type="text" class="form-control" id="edu-field" data-bs-toggle="dropdown"
-                            aria-expanded="false" placeholder="Ex: Batchelor's" required>
-                        <ul id="fields" class="dropdown-menu w-100" aria-labelledby="edu-field">
+                            aria-expanded="false" placeholder="Ex: Business" required>
+                        <ul id="edu-fields" class="dropdown-menu w-100" aria-labelledby="edu-field">
 
                         </ul>
                     </div>
@@ -372,6 +368,23 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
             </div>
             <div class="modal-footer">
                 <button id="edu-save" class="btn btn-primary rounded-5">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="followRequest">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Follow Request Send</h5>
+                <button class="btn btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-text text-wrap">Follow request send, wait until user accept your request!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -641,13 +654,31 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                     element.toLowerCase().endsWith(fieldName.toLowerCase());
             });
 
-            $('#fields').empty();
+            $('#edu-fields').empty();
             matchingElements.forEach(field => {
                 const button = $(`<li><button class="dropdown-item">${field}</button></li>`);
                 button.find('button').click(function () {
                     $('#edu-field').val(field);
                 });
-                $('#fields').append(button);
+                $('#edu-fields').append(button);
+            });
+        });
+
+        $('#follow').click(function () {
+            const formData = new FormData();
+            formData.append('user_id', $('#follow_id').val());
+            $.ajax({
+                url: '/user/follow',
+                data: formData,
+                type: 'post',
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    $('#followRequest').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.log('ERROR: ' + error);
+                }
             });
         });
     });
