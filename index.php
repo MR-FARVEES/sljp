@@ -59,6 +59,8 @@ $router->addRoute("POST", "/user/follow"        , [UserController::class    , "f
 $router->addRoute("POST", "/user/follow/request", [UserController::class    , "showNotifications"   ]);
 $router->addRoute("POST", "/user/follow/add"    , [UserController::class    , "acceptFollow"        ]);
 $router->addRoute("POST", "/user/follow/ignore" , [UserController::class    , "ignoreFollow"        ]);
+$router->addRoute("POST", "/user/message/all"   , [UserController::class    , "allMessages"         ]);
+$router->addRoute("POST", "/user/message/send"  , [UserController::class    , "sendMessage"         ]);
 
 include_once __DIR__ ."/header.php";
 $router->resolveRoute($request);
