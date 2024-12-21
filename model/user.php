@@ -24,7 +24,7 @@ class UserModel extends Model
             show_school ENUM('show', 'hide') DEFAULT 'show'
         );
     ";
-    private $insert_user = "INSERT INTO `user` (first, last, username, password, email, contact, gender, dob, address, profile, nic, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
+    private $insert_user = "INSERT INTO `user` (first, last, username, password, email, contact, gender, dob, address, nic, role) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
     private $auth_user = "SELECT id, first, last, email, gender, role, contact, nic, profile, cover, status FROM `user` WHERE username = ? AND password = ?";
     private $update_password = "UPDATE `user` SET password = ? WHERE id = ?";
     private $delete_user = "DELETE FROM `user` WHERE id = ?";
@@ -34,6 +34,7 @@ class UserModel extends Model
     private $update_user = "UPDATE `user` SET first = ?, last = ?, headline = ?, address = ?, show_school = ? WHERE id = ?";
     private $search_query = "SELECT * FROM `user` WHERE (first LIKE ? OR first LIKE ? OR first LIKE ? OR last LIKE ? OR last LIKE ? OR last LIKE ?) AND NOT role = 'admin';";
     private $match_headline = "SELECT * FROM `user` WHERE ";
+    private $update_profile = "UPDATE `user` SET profile = ? WHERE id = ?";
 
     public function __construct()
     {
@@ -46,9 +47,9 @@ class UserModel extends Model
         $this->create($this->create_user_table);
     }
 
-    public function createNewUser($first, $last, $username, $password, $email, $contact, $gener, $dob, $address, $profile, $nic, $role)
+    public function createNewUser($first, $last, $username, $password, $email, $contact, $gener, $dob, $address, $nic, $role)
     {
-        $this->insert($this->insert_user, [$first, $last, $username, $password, $email, $contact, $gener, $dob, $address, $profile, $nic, $role], "ssssssssssss");
+        $this->insert($this->insert_user, [$first, $last, $username, $password, $email, $contact, $gener, $dob, $address, $nic, $role], "sssssssssss");
     }
 
     public function authenticate($username, $password)
@@ -114,10 +115,16 @@ class UserModel extends Model
             $params[] = '%' . $value . '%';
         }
         $whereClauseString = implode(' OR ', $whereClause);
+        $whereClauseString = "($whereClauseString) AND NOT role = 'admin'";
         return $this->fetch(
             $this->match_headline . $whereClauseString,
             $params,
             str_repeat('s', count($params))
         );
+    }
+
+    public function updateProfile($profile, $id)
+    {
+        $this->update($this->update_profile, [$profile, $id], "si");
     }
 }

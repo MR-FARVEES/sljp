@@ -1,1 +1,1 @@
-<h1 class="mt-5">Provider Job</h1>
+<h1 class="mt-5">Seeker Job</h1>
