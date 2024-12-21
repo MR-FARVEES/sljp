@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 20, 2024 at 09:34 PM
+-- Generation Time: Dec 21, 2024 at 07:39 AM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `education` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `institude` (`institude`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `education`
@@ -77,7 +77,8 @@ INSERT INTO `education` (`id`, `user_id`, `institude`, `degree`, `field`, `smont
 (2, 6, 1, 'BICT Honors', 'Software Engineering', '09', '2020', '11', '2026', 3.00, 'N/A', 'N/A'),
 (6, 7, 1, 'BICT Honors', 'Software Engineering', '09', '2022', '12', '2026', 3.00, 'N/A', 'N/A'),
 (4, 2, 1, 'BICT Honors', 'Gaming & Animation', '09', '2022', '12', '2026', 3.80, 'N/A', 'N/A'),
-(5, 3, 1, 'BICT Honors', 'Gaming & Animation', '09', '2022', '12', '2026', 3.50, 'N/A', 'N/A');
+(5, 3, 1, 'BICT Honors', 'Gaming & Animation', '09', '2022', '12', '2026', 3.50, 'N/A', 'N/A'),
+(7, 8, 2, 'BSc Honors', 'Software Engineering', '01', '2015', '08', '2019', 3.85, 'N/A', 'N/A');
 
 -- --------------------------------------------------------
 
@@ -208,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   `posted_at` datetime DEFAULT (now()),
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `post`
@@ -217,7 +218,8 @@ CREATE TABLE IF NOT EXISTS `post` (
 INSERT INTO `post` (`id`, `user_id`, `post_text`, `post_source`, `posted_at`) VALUES
 (2, 1, 'Post testing', 'post-2.jpg', '2024-12-20 20:20:52'),
 (5, 2, 'In an MVC structure for posting content, the Model handles the database operations, such as saving, retrieving, or updating posts. The View displays the user interface, like forms for creating posts or pages showing the content. The Controller processes user input, validates data, and interacts with the Model to fetch or save data, passing the results to the View. For example, when a user submits a post, the Controller validates it, updates the Model, and then refreshes the View to reflect the changes. This separation ensures clean, maintainable, and scalable code.', 'post-5.jpg', '2024-12-20 21:08:40'),
-(6, 3, 'jQuery is a fast, lightweight JavaScript library that simplifies HTML document traversal, event handling, animations, and AJAX interactions. It helps developers write less code while achieving more functionality across different browsers. Despite modern frameworks like React or Angular, jQuery remains useful for quick projects and enhancing legacy systems. Its simplicity and wide adoption have made it a cornerstone in the evolution of web development.', 'post-6.jpg', '2024-12-20 21:12:57');
+(6, 3, 'jQuery is a fast, lightweight JavaScript library that simplifies HTML document traversal, event handling, animations, and AJAX interactions. It helps developers write less code while achieving more functionality across different browsers. Despite modern frameworks like React or Angular, jQuery remains useful for quick projects and enhancing legacy systems. Its simplicity and wide adoption have made it a cornerstone in the evolution of web development.', 'post-6.jpg', '2024-12-20 21:12:57'),
+(7, 1, 'flow char is master thing to deliver system logic ...', 'post-7.jpg', '2024-12-21 13:08:03');
 
 -- --------------------------------------------------------
 
@@ -302,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `contact` (`contact`),
   UNIQUE KEY `nic` (`nic`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `user`
@@ -314,7 +316,8 @@ INSERT INTO `user` (`id`, `first`, `last`, `username`, `password`, `email`, `con
 (3, 'sachini', 'dissanayeka', 'sachini', '123', 'sachini@gmail.com', '765482543', 'Male', '2001-01-01', 'Scahini home town at Kandy', 'profile-3.jpg', 'default.jpg', '200134129854', 'seeker', 'None', 'Game Designer | Story Writer', 'show'),
 (4, 'mohamed', 'ijas', 'ijas', '123', 'ijas@gmail.com', '752354123', 'Male', '2001-12-02', 'Anuradapura, khahattagasthigaliya', 'profile-4.jpg', 'default.jpg', '200123904523', 'admin', 'None', 'N/A', 'show'),
 (6, 'Abdullah', 'Naleem', 'naleem', '123', 'naleem@gmail.com', '765434234', 'Female', '1998-01-01', 'Marudhana', 'profile-6.jpg', 'default.jpg', '199813603212', 'seeker', 'None', 'UI/UX Designer | Web Developer | Software Developer', 'show'),
-(7, 'Mohamed', 'Arthath', 'arthath', '123', 'arthath@gmail.com', '765467564', 'Female', '1999-01-01', 'Kinniya', 'profile-7.jpg', 'default.jpg', '200132207876', 'seeker', 'None', 'Full Stack | DevOps', 'show');
+(7, 'Mohamed', 'Arthath', 'arthath', '123', 'arthath@gmail.com', '765467564', 'Female', '1999-01-01', 'Kinniya', 'profile-7.jpg', 'default.jpg', '200132207876', 'seeker', 'None', 'Full Stack | DevOps', 'show'),
+(8, 'Omila', 'Jayawardana', 'omila', '123', 'omila@gmail.com', '765498345', 'Female', '2001-01-01', 'Somewhere', 'profile-8.jpg', 'default.jpg', '200117803768', 'provider', 'None', 'Founder & CEO at Skills Internationals | Software Developer | Project Manager | DevOps', 'show');
 
 -- --------------------------------------------------------
 
@@ -342,7 +345,17 @@ INSERT INTO `user_skill` (`user_id`, `skill`) VALUES
 (1, 'Web Development'),
 (2, 'UI/UX Designer'),
 (6, 'UI/UX Designer'),
-(6, 'Web Development');
+(6, 'Web Development'),
+(8, 'HTML 5'),
+(8, 'Java Programming'),
+(8, 'JavaScript'),
+(8, 'Jquery'),
+(8, 'MongoDB'),
+(8, 'MySQL DMBS'),
+(8, 'Python Development'),
+(8, 'Software Development'),
+(8, 'UI/UX Designer'),
+(8, 'Web Development');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

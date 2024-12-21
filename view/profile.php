@@ -217,7 +217,7 @@
                         </div>
                         <div class="card shadow-sm mb-3">
                             <div class="card-body p-4">
-                                <h5 class="card-title">Education</h5>
+                                <h5 class="card-title">Skills</h5>
                                 <div class="card-text">
                                     <?php
                                     $user_id = 0;
@@ -228,6 +228,7 @@
                                     }
                                     $count = 0;
                                     $row = false;
+                                    $i = 0;
                                     $skills = $this->userSkillModel->getAllSkills($user_id);
                                     while ($skill = $skills->fetch_assoc()) {
                                         if (!$row) {
@@ -251,11 +252,15 @@
                                             }
                                             $count++;
                                             $count = $count % 3;
+                                            $i++;
                                     }
                                     if ($row) {
                                         ?>
                                     </div>
                                     <?php
+                                    }
+                                    if ($i == 0) {
+                                        echo "Skills not updated";
                                     }
                                     ?>
                             </div>

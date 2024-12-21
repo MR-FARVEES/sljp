@@ -93,14 +93,14 @@
                                     </div>
                                     <?php
                             }
-                            if ($count == 2) {
+                            if ($count == 3) {
                                 $row = false;
                                 ?>
                                 </div>
                                 <?php
                             }
                             $count++;
-                            $count = $count % 4;
+                            $count = $count % 3;
                         }
                     }
                     if ($row == true) {

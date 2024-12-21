@@ -76,13 +76,13 @@ class UserController extends Controller
             $address = $_POST["address"];
             $role = $_POST["role"];
 
-            $count = $this->userModel->count();
-            $filename = "profile-" . ($count + 1) . ".jpg";
-            $upload_path = __DIR__ . "/../assets/images/user/" . $filename;
-            move_uploaded_file($_FILES["image"]["tmp_name"], $upload_path);
-
             try {
-                $this->userModel->createNewUser($first, $last, $username, $password, $email, $contact, $gender, $year . "-" . $month . "-" . $day, $address, $filename, $nic, $role);
+                $this->userModel->createNewUser($first, $last, $username, $password, $email, $contact, $gender, $year . "-" . $month . "-" . $day, $address, $nic, $role);
+                $insert_id = $this->userModel->insert_id();
+                $filename = "profile-" . $insert_id . ".jpg";
+                $upload_path = __DIR__ . "/../assets/images/user/" . $filename;
+                move_uploaded_file($_FILES["image"]["tmp_name"], $upload_path);
+                $this->userModel->updateProfile($filename, $insert_id);
                 $this->redirect("/login?create=true");
             } catch (mysqli_sql_exception $e) {
                 $this->redirect("/register?exists=true");
