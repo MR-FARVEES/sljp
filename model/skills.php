@@ -6,13 +6,14 @@ class SkillModel extends Model
     private $create_skill_table = "
         CREATE TABLE IF NOT EXISTS `skill` (
             id INT PRIMARY KEY AUTO_INCREMENT,
-            title VARCHAR(50) NOT NULL
+            title VARCHAR(50) UNIQUE NOT NULL
         );
     ";
     private $insert_skill = "INSERT INTO `skill` (title) VALUES (?);";
     private $get_all = "SELECT * FROM `skill`";
     private $get_skill = "SELECT * FROM `skill` WHERE id = ?";
     private $delete_skill = "DELETE FROM `skill` WHERE id = ?";
+    private $check = "SELECT * FROM `skill` WHERE title = ?";
 
     public function __construct()
     {
@@ -43,5 +44,10 @@ class SkillModel extends Model
     public function removeSkill($id)
     {
         $this->delete($this->delete_skill, [$id], "i");
+    }
+
+    public function checkSkill($title)
+    {
+        return $this->fetch($this->check, [$title], "s");
     }
 }

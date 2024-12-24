@@ -15,6 +15,15 @@
                             } else {
                                 echo $user['cover'];
                             } ?>" alt="Title" />
+                            <?php 
+                            if ($id == 0) {
+                            ?>
+                            <div class="d-flex justify-content-end" style="margin-top:-45px;margin-right:8px;">
+                                <i class="fa fa-camera fs-1 text-secondary" id="change-cover"></i>
+                            </div>
+                            <?php
+                            }
+                            ?>
                             <div class="rounded-circle"
                                 style="margin-left:20px;margin-top:-140px;width: 186px;height: 186px;background:#fff;padding:3px;">
                                 <img class="rounded-circle" width="180" height="180" src="/assets/images/user/<?php if ($id == 0) {
@@ -23,6 +32,8 @@
                                     echo $user['profile'];
                                 } ?> ?>" alt="Title" />
                             </div>
+                            <?php if ($id == 0) { echo '<i class="fa fa-camera text-secondary fs-1" style="margin-left:150px;margin-top:-30px;width:30px;"
+                                id="change-profile"></i>'; }?>
                             <div class="card-body">
                                 <?php
                                 if ($id == 0) {
@@ -270,9 +281,9 @@
                 <div class="align-self-start  col-md-4 mb-3">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h6 class="card-title">
+                            <h5 class="card-title">
                                 People you may know
-                            </h6>
+                            </h5>
                             <p class="card-text text-wrap">
                                 <?php
                                 $educations = $this->educationModel->getEducation($_SESSION['id']);
@@ -289,18 +300,19 @@
                                     while ($user = $users->fetch_assoc()) {
                                         if (!$this->followerModel->isFollower($_SESSION['id'], $user['id']) && $_SESSION['id'] != $user['id']) {
                                             ?>
-                                        <div class="d-flex p-3">
+                                        <div class="d-flex ps-2 pt-2 pb-2">
                                             <img src="/assets/images/user/<?php echo $user['profile']; ?>" width="50" height="50"
                                                 class="rounded-circle" alt="">
                                             <div class="ms-2 pt-1">
-                                                <strong>
-                                                    <?php echo ucfirst($user['first']) . " " . ucfirst($user['last']); ?>
-                                                </strong><br>
+                                                <strong><small>
+                                                        <?php echo ucfirst($user['first']) . " " . ucfirst($user['last']); ?>
+                                                    </small></strong><br>
                                                 <small class="text-muted"><?php echo $user['headline']; ?></small><br>
-                                                <a class="btn btn-outline-secondary rounded-5 mt-2"
+                                                <a class="btn btn-outline-secondary rounded-5 mt-2 pt-0 pb-0 border-2"
                                                     href="/search/result?id=<?php echo $user['id']; ?>">View full profile</a>
                                             </div>
                                         </div>
+                                        <hr>
                                         <?php
                                         }
                                     }
@@ -555,6 +567,54 @@
     </div>
 </div>
 
+<div class="modal" id="choose-profile">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choose Image</h5>
+                <button class="btn btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/user/profile/change" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <?php 
+                    $request = new Request();
+                    ?>
+                    <input type="hidden" name="user_id" value="<?php echo $user_info['id'];?>">
+                    <input type="hidden" name="path" value="<?php echo $request->getPath(); ?>">
+                    <input type="file" class="form-control" name="profile" id="profile">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary"><i class="fa fa-refresh"></i>&nbsp;Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="choose-cover">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choose Image</h5>
+                <button class="btn btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/user/cover/change" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <?php 
+                    $request = new Request();
+                    ?>
+                    <input type="hidden" name="userid" value="<?php echo $user_info['id'];?>">
+                    <input type="hidden" name="path" value="<?php echo $request->getPath(); ?>">
+                    <input type="file" class="form-control" name="cover" id="profile">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary"><i class="fa fa-refresh"></i>&nbsp;Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         var skills = [];
@@ -565,25 +625,26 @@
         var schoolName = "";
         var degreeName = "";
         var fieldName = "";
-
-        $.ajax({
-            url: '/skills',
-            data: {},
-            type: 'post',
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                const regex = /\[(.*?)\]/g;
-                const matches = response.matchAll(regex);
-                for (const match of matches) {
-                    skills = match[1].split(",");
-                }
-            },
-            error: function (xhr, status, errror) {
-                console.log("ERROR: " + errror);
-            }
+        $('#change-profile').hover(() => {
+            $('#change-profile').removeClass('text-secondary');
+            $('#change-profile').addClass('text-primary');
+        }, () => {
+            $('#change-profile').removeClass('text-primary');
+            $('#change-profile').addClass('text-secondary');
         });
-
+        $('#change-cover').hover(() => {
+            $('#change-cover').removeClass('text-secondary');
+            $('#change-cover').addClass('text-primary');
+        }, () => {
+            $('#change-cover').removeClass('text-primary');
+            $('#change-cover').addClass('text-secondary');
+        });
+        $('#change-cover').click(() => {
+            $('#choose-cover').modal('show');
+        });
+        $('#change-profile').click(() => {
+            $('#choose-cover').modal('show');
+        });
         $.ajax({
             url: '/universities',
             data: {},

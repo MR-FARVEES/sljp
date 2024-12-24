@@ -12,6 +12,8 @@ require_once __DIR__ . "/../model/follow_request.php";
 require_once __DIR__ . "/../model/follower.php";
 require_once __DIR__ . "/../model/message.php";
 require_once __DIR__ . "/../model/post.php";
+require_once __DIR__ . "/../model/comment.php";
+require_once __DIR__ . "/../model/like.php";
 
 class UserController extends Controller
 {
@@ -27,6 +29,8 @@ class UserController extends Controller
     private $followerModel;
     private $messageModel;
     private $postModel;
+    private $commentModel;
+    private $likeModel;
 
     public function __construct()
     {
@@ -43,6 +47,8 @@ class UserController extends Controller
         $this->followerModel = new FollowerModel();
         $this->messageModel = new MessageModel();
         $this->postModel = new PostModel();
+        $this->commentModel = new CommentModel();
+        $this->likeModel = new LikeModel();
     }
 
     public function login()
@@ -357,11 +363,128 @@ class UserController extends Controller
             while ($post = $posts->fetch_assoc()) {
                 $users = $this->userModel->getUserInfo($post['user_id']);
                 while ($user = $users->fetch_assoc()) {
-                    echo $user['profile'] . "<>" . ucfirst($user['first']) . " " . ucfirst($user['last']) . "<>" . $post['post_text'] . "<>" . $post['post_source'] . "<>" . $post['id'] . '<>' . $user['id'];
+                    echo $user['profile'] . "<>" . ucfirst($user['first']) . " " . ucfirst($user['last']) . "<>" . $post['post_text'] . "<>" . $post['post_source'] . "<>" . $post['id'] . '<>' . $user['id'] . '<>' . $post['type'];
                 }
                 echo '<#>';
             }
             echo ']';
+        }
+    }
+
+    public function getPost()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $post_id = $_POST['post_id'];
+            $posts = $this->postModel->getPost($post_id);
+            echo '[';
+            while ($post = $posts->fetch_assoc()) {
+                $users = $this->userModel->getUserInfo($post['user_id']);
+                while ($user = $users->fetch_assoc()) {
+                    echo $user['profile'] . "<>" . ucfirst($user['first']) . " " . ucfirst($user['last']) . "<>" . $post['post_text'] . "<>" . $post['post_source'] . "<>" . $post['id'] . '<>' . $user['id'] . '<>' . $post['type'];
+                }
+                echo '<#>';
+            }
+            echo ']';
+        }
+    }
+
+    public function likePost() {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $post_id = $_POST['post_id'];
+            $this->likeModel->createNewLike($post_id, $_SESSION['id']);
+        }
+    }
+
+    public function getLikes() {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $post_id = $_POST['post_id'];
+            $likes = $this->likeModel->getAllLikes($post_id);
+            echo '[';
+            while ($like = $likes->fetch_assoc()) {
+                $users = $this->userModel->getUserInfo($like['user_id']);
+                while ($user = $users->fetch_assoc()) {
+                    echo $user['profile'] . "<>" . ucfirst($user['first']) . " " . ucfirst($user['last']);
+                }
+                echo '<#>';
+            }
+            echo ']';
+        }
+    }
+
+    public function commentPost() {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $post_id = $_POST['post_id'];
+            $comment = $_POST['comment'];
+            $this->commentModel->createNewComment($post_id, $_SESSION['id'], $comment);
+        }
+    }
+
+    public function getAllComments() {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $posts = $_POST['posts'];
+            $post_ids = json_decode($posts);
+            print_r($post_ids);
+            $comments = $this->commentModel->getAllComments($post_ids);
+            echo '[';
+            while ($comment = $comments->fetch_assoc()) {
+                $users = $this->userModel->getUserInfo($comment['user_id']);
+                while ($user = $users->fetch_assoc()) {
+                    echo $user['profile'] . "<>" . ucfirst($user['first']) . " " . ucfirst($user['last']) . "<>" . $comment['content'] . "<>" .$comment['id'] . "<>" . $comment['post_id'];
+                }
+                echo '<#>';
+            }
+            echo ']';
+        }
+    }
+
+    public function rePost() {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $post_id = $_POST['post_id'];
+            $post_text = $_POST['post_text'];
+            $this->postModel->createRePost($_SESSION['id'], $post_text, 'copy');
+            $insert_id = $this->postModel->insert_id();
+            $this->postModel->updatePost($post_id, $insert_id);
+        }
+    }
+
+    public function sendPost() {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $post_id = $_POST['post-send'];
+            $message = $_POST['repost-msg'];
+            $numbers = [];
+            foreach($_POST as $key => $value) {
+                if (preg_match('/user-(\d+)/', $key, $matches) && $value === 'on') {
+                    $numbers[] = $matches[1];
+                }
+            }
+            foreach($numbers as $key => $value) {
+                $this->messageModel->createNewMessage($_SESSION['id'], $value, $post_id, 'post');
+            }
+        }
+        $this->redirect('/seeker');
+    }
+
+    public function changeProfile() {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $user_id = $_POST['user_id'];
+            $file = $_FILES['profile'];
+            $path = $_POST["path"];
+            $upload_file = __DIR__ . "/../assets/images/user/" . $file['name'];
+            $this->userModel->updateProfile($file['name'], $user_id);
+            move_uploaded_file($file['tmp_name'], $upload_file);
+            $this->redirect($path);
+        }
+    }
+
+    public function changeCover() {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $user_id = $_POST["userid"];
+            $file = $_FILES['cover'];
+            $path = $_POST['path'];
+            $upload_file = __DIR__ . "/../assets/images/cover/" . $file["name"];
+            $this->userModel->updateCover($file['name'], $user_id);
+            move_uploaded_file($file['tmp_name'], $upload_file);
+            $this->redirect($path);
         }
     }
 }

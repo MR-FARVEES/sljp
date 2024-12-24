@@ -24,11 +24,13 @@ $router->addRoute("GET", "/user/connection"     , [SeekerController::class  , "c
 $router->addRoute("GET", "/seeker"              , [SeekerController::class  , "index"               ]);
 $router->addRoute("GET", "/seeker/network"      , [SeekerController::class  , "network"             ]);
 $router->addRoute("GET", "/seeker/job"          , [SeekerController::class  , "job"                 ]);
+$router->addRoute("GET", "/seeker/job/collection", [SeekerController::class  , "jobCollection"       ]);
 $router->addRoute("GET", "/seeker/profile"      , [SeekerController::class  , "seekerProfile"       ]);
 $router->addRoute("GET", "/provider"            , [ProviderController::class, "index"               ]);
 $router->addRoute("GET", "/provider/network"    , [ProviderController::class, "network"             ]);
 $router->addRoute("GET", "/provider/job"        , [ProviderController::class, "job"                 ]);
 $router->addRoute("GET", "/provider/profile"    , [ProviderController::class, "providerProfile"     ]);
+$router->addRoute("GET", "/provider/job/applicant", [ProviderController::class, "seeApplicants"     ]);
 $router->addRoute("GET", "/admin"               , [AdminController::class   , "dashboard"           ]);
 
 // POST REQUEST METHODS
@@ -61,7 +63,23 @@ $router->addRoute("POST", "/user/message/all"   , [UserController::class    , "a
 $router->addRoute("POST", "/user/message/send"  , [UserController::class    , "sendMessage"         ]);
 $router->addRoute("POST", "/user/post"          , [UserController::class    , "createPost"          ]);
 $router->addRoute("POST", "/user/post/all"      , [UserController::class    , "getAllPosts"         ]);
+$router->addRoute("POST", "/user/post/like", [UserController::class, "likePost"]);
+$router->addRoute("POST", "/user/post/comment", [UserController::class, "commentPost"]);
+$router->addRoute("POST", "/user/post/copy", [UserController::class, "rePost"]);
+$router->addRoute("POST", "/user/post/send", [UserController::class, "sendPost"]);
+$router->addRoute("POST", "/user/repost/data", [UserController::class, "getPost"]);
+$router->addRoute("POST", "/user/comment/all", [UserController::class, "getAllComments"]);
+$router->addRoute("POST", "/user/profile/change", [UserController::class, "changeProfile"]);
+$router->addRoute("POST", "/user/cover/change", [UserController::class, "changeCover"]);
 
+$router->addRoute("POST", "/company/add"        , [ProviderController::class, "createCompany"       ]);
+$router->addRoute("POST", "/provider/job/add"   , [ProviderController::class, "createJob"           ]);
+$router->addRoute("POST", "/provider/job/skill/update", [ProviderController::class, "updateJobSkills"     ]);
+
+$router->addRoute("POST", "/seeker/job/apply", [SeekerController::class, "applyForJob"]);
+
+header("Cache-Control: no-cache, must-revalidate");
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
 include_once __DIR__ ."/header.php";
 $router->resolveRoute($request);
 include_once __DIR__ ."/footer.php";

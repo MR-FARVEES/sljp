@@ -9,7 +9,9 @@
                 integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
                 crossorigin="anonymous">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.jss"></script>
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
         <style>
                 :root {
                         --my-secondary: #bbbcbd;
@@ -86,6 +88,15 @@
                 .post-hover:hover {
                         text-decoration: underline !important;
                         color: blue !important;
+                }
+
+                .click-hover:hover {
+                        cursor: pointer;
+                        text-decoration: underline;
+                }
+
+                .job-hover:hover {
+                        background-color: rgba(186, 186, 255, 0.2);
                 }
         </style>
 </head>

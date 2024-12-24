@@ -24,6 +24,7 @@ class MessageModel extends Model {
     public function createMessage() {
         $this->create($this->create_message_table);
     }
+    
 
     public function createNewMessage($send, $recv, $msg_data, $msg_type) {
         $this->insert($this->insert_message, [$send, $recv, $msg_data, $msg_type], "iiss");
