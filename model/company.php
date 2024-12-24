@@ -22,6 +22,7 @@ class CompanyModel extends Model {
     private $get_all_companies = "SELECT * FROM `company`";
     private $update_company = "UPDATE `company` SET name = ?, location = ?, industry = ?, website = ?, founded_at = ? WHERE id = ?";
     private $delete_company = "DELETE FROM `company` WHERE id = ?";
+    private $update_company_cover = "UPDATE `company` SET cover = ? WHERE id = ?";
 
     public function __construct() {
         parent::__construct();
@@ -58,5 +59,9 @@ class CompanyModel extends Model {
 
     public function getCompanyById($id) {
         return $this->fetch($this->get_company_by_id, [$id], "i");
+    }
+
+    public function updateCompanyCover($cover, $id) {
+        $this->update($this->update_company_cover, [$cover, $id], "si");
     }
 }

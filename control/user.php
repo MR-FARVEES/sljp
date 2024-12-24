@@ -482,6 +482,7 @@ class UserController extends Controller
             $file = $_FILES['cover'];
             $path = $_POST['path'];
             $upload_file = __DIR__ . "/../assets/images/cover/" . $file["name"];
+            $_SESSION['cover'] = $file['name'];
             $this->userModel->updateCover($file['name'], $user_id);
             move_uploaded_file($file['tmp_name'], $upload_file);
             $this->redirect($path);

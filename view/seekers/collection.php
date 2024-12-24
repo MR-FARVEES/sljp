@@ -158,60 +158,60 @@ $jobId = isset($_GET['jobId']) ? $_GET['jobId'] : null;
                                                     past day</small></span></p>
                                         <p class="fs-6 fw-medium mt-3 m-0">Applicants senior level</p>
                                         <p class="m-0 fw-bold"><span
-                                                class="fw-normal"><small><?php echo (count($entry) / $count) * 100; ?>%
+                                                class="fw-normal"><small><?php if ($count != 0) { echo intval(count($entry) / $count * 100); } else { echo 0;} ?>%
                                                     Entry level
                                                     applicant</small></span></p>
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated"
                                                 role="progressbar"
-                                                aria-valuenow="<?php echo (count($entry) / $count) * 100 ?>"
+                                                aria-valuenow="<?php if ($count != 0) {  echo intval((count($entry) / $count) * 100); } else { echo 0;} ?>"
                                                 aria-valuemin="0" aria-valuemax="100"
-                                                style="width: <?php echo (count($entry) / $count) * 100 ?>%">
+                                                style="width: <?php if ($count != 0) {  echo intval((count($entry) / $count) * 100) ;} else { echo 0;} ?>%">
                                             </div>
                                         </div>
                                         <p class="m-0 fw-bold"><span
-                                                class="fw-normal"><small><?php echo (count($senior) / $count) * 100; ?>%
+                                                class="fw-normal"><small><?php if ($count != 0) {  echo intval((count($senior) / $count) * 100);  } else { echo 0;}?>%
                                                     Senior
                                                     level applicant</small></span></p>
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated"
                                                 role="progressbar"
-                                                aria-valuenow="<?php echo (count($senior) / $count) * 100 ?>"
+                                                aria-valuenow="<?php  if ($count != 0) { echo intval((count($senior) / $count) * 100); } else { echo 0;} ?>"
                                                 aria-valuemin="0" aria-valuemax="100"
-                                                style="width: <?php echo (count($senior) / $count) * 100 ?>%">
+                                                style="width: <?php if ($count != 0) {  echo intval((count($senior) / $count) * 100 ); } else { echo 0;}?>%">
                                             </div>
                                         </div>
                                         <p class="m-0 fw-bold"><span
-                                                class="fw-normal"><small><?php echo (count($director) / $count) * 100; ?>%
+                                                class="fw-normal"><small><?php  if ($count != 0) { echo intval((count($director) / $count) * 100); } else { echo 0;} ?>%
                                                     Director
                                                     level applicant</small></span></p>
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated"
                                                 role="progressbar"
-                                                aria-valuenow="<?php echo (count($director) / $count) * 100 ?>"
+                                                aria-valuenow="<?php  if ($count != 0) { echo intval((count($director) / $count) * 100);  } else { echo 0;}?>"
                                                 aria-valuemin="0" aria-valuemax="100"
-                                                style="width: <?php echo (count($director) / $count) * 100 ?>%">
+                                                style="width: <?php if ($count != 0) {  echo intval((count($director) / $count) * 100 ); } else { echo 0;}?>%">
                                             </div>
                                         </div>
                                         <p class="fs-6 fw-medium m-0 mt-3">Applicants education level</p>
                                         <div class="d-flex">
                                             <p class="text-end fs-3 fw-medium" style="width:50px;">
-                                                <?php echo (count($bedu) / $count) * 100; ?></p>
+                                                <?php if ($count != 0) {  echo intval((count($bedu) / $count) * 100); } else { echo 0;} ?></p>
                                             <p style="margin-top:12px;">% have a Bachelor's Degree</p>
                                         </div>
                                         <div class="d-flex">
                                             <p class="text-end fs-3 fw-medium" style="width:50px;">
-                                                <?php echo (count($medu) / $count) * 100; ?></p>
+                                                <?php  if ($count != 0) { echo intval((count($medu) / $count) * 100);  } else { echo 0;}?></p>
                                             <p style="margin-top:12px;">% have a Master's Degree</p>
                                         </div>
                                         <div class="d-flex">
                                             <p class="text-end fs-3 fw-medium" style="width:50px;">
-                                                <?php echo (count($mbaEdu) / $count) * 100; ?></p>
+                                                <?php  if ($count != 0) { echo intval((count($mbaEdu) / $count) * 100); } else { echo 0;} ?></p>
                                             <p style="margin-top:12px;">% have a Master of Business Administration</p>
                                         </div>
                                         <div class="d-flex">
                                             <p class="text-end fs-3 fw-medium" style="width:50px;">
-                                                <?php echo (count($other) / $count) * 100; ?></p>
+                                                <?php  if ($count != 0) { echo intval((count($other) / $count) * 100); } else { echo 0;} ?></p>
                                             <p style="margin-top:12px;">% have other degrees</p>
                                         </div>
                                     </div>

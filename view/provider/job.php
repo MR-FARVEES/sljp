@@ -11,8 +11,9 @@
                     ?>
                     <div class="col-12 col-md-9">
                         <div class="card mb-3">
-                            <img src="/assets/images/cover/<?php echo $company['cover']; ?>" class="card-img-top"
+                            <img src="/assets/images/company/cover/<?php echo $company['cover']; ?>" class="card-img-top"
                                 height="250" alt="">
+                            <div class="d-flex justify-content-end" style="margin-top:-45px;margin-right:8px;"><i class="fa fa-camera text-secondary fs-1" id="change-cover"></i></div>
                             <div class="card-body">
                                 <h5 class="card-title">Post a new job for <span
                                         class="text-primary fw-bold"><?php echo $company['name']; ?></span></h5>
@@ -166,7 +167,7 @@
                         <input type="number" class="form-control" name="salary" id="salary">
                     </div>
                     <div class="mb-2 col-12 col-md-6">
-                        <label for="vacancy">Salary*</label>
+                        <label for="vacancy">Vacancy*</label>
                         <input type="number" class="form-control" name="vacancy" id="vancancy">
                     </div>
                 </div>
@@ -258,6 +259,29 @@
         </div>
     </div>
 </div>
+<div class="modal" id="choose-cover">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choose Image</h5>
+                <button class="btn btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/company/cover/change" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <?php 
+                    $request = new Request();
+                    ?>
+                    <input type="hidden" name="company_id" value="<?php echo $company_id;?>">
+                    <input type="hidden" name="path" value="<?php echo $request->getPath(); ?>">
+                    <input type="file" class="form-control" name="cover" id="profile">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary"><i class="fa fa-refresh"></i>&nbsp;Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <?php
 $jobs = $this->jobModel->getAllJobs($company_id);
 while ($job = $jobs->fetch_assoc()) {
@@ -331,6 +355,16 @@ while ($job = $jobs->fetch_assoc()) {
             ]
         });
         $('#skillTable').DataTable();
+        $('#change-cover').hover(() => {
+            $('#change-cover').removeClass('text-secondary');
+            $('#change-cover').addClass('text-primary');
+        }, () => {
+            $('#change-cover').removeClass('text-primary');
+            $('#change-cover').addClass('text-secondary');
+        });
+        $('#change-cover').click(() => {
+            $('#choose-cover').modal('show');
+        });
         const print = (data) => {
             console.log(data);
         }

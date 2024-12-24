@@ -75,11 +75,10 @@ $router->addRoute("POST", "/user/cover/change", [UserController::class, "changeC
 $router->addRoute("POST", "/company/add"        , [ProviderController::class, "createCompany"       ]);
 $router->addRoute("POST", "/provider/job/add"   , [ProviderController::class, "createJob"           ]);
 $router->addRoute("POST", "/provider/job/skill/update", [ProviderController::class, "updateJobSkills"     ]);
+$router->addRoute("POST", "/company/cover/change", [ProviderController::class, "updateCompanyCover"         ]);
 
 $router->addRoute("POST", "/seeker/job/apply", [SeekerController::class, "applyForJob"]);
 
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
 include_once __DIR__ ."/header.php";
 $router->resolveRoute($request);
 include_once __DIR__ ."/footer.php";

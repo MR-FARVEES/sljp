@@ -55,7 +55,7 @@ while ($user = $users->fetch_assoc()) {
                 $posts = $this->postModel->getMyPosts($user_info['id']);
                 while ($post = $posts->fetch_assoc()) {
                     ?>
-                    <div class="card align-self-start shadow-sm mb-3">
+                    <div class="card align-self-start shadow-sm mb-3" id="post-card-<?php echo $post['id']; ?>">
                         <div class="p-3">
                             <div class="d-flex justify-content-between w-100">
                                 <div class="d-flex align-items-center">
@@ -79,9 +79,11 @@ while ($user = $users->fetch_assoc()) {
                                 </div>
                             </div>
                             <div id="post" class="p-2">
+                                <input type="hidden" id="pdata-<?php echo $post['id']; ?>"
+                                    value="<?php echo $post['post_text']; ?>">
                                 <small id="post_desc" class="text-wrap"
                                     style="font-size:14px;"><?php echo $post['post_text']; ?></small>
-                                <span id="read-more" class="text-secondary"
+                                <span id="exco" class="text-secondary"
                                     style="cursor: pointer;font-size:14px;">&nbsp;...more</span>
                                 <img src="/assets/images/post/<?php echo $post['post_source']; ?>" class="card-img-top mt-2"
                                     alt="">
@@ -143,7 +145,8 @@ while ($user = $users->fetch_assoc()) {
                                     <div class="d-flex justify-content-start">
                                         <button class="btn btn-primary pt-0 pb-0 rounded-5 me-2"><i
                                                 class="fa fa-plus"></i>&nbsp;&nbsp;Follow</button>
-                                        <a href="/search/result?id=<?php echo $user['id']; ?>" class="btn btn-outline-secondary pt-0 pb-0 border-2 rounded-5"><i
+                                        <a href="/search/result?id=<?php echo $user['id']; ?>"
+                                            class="btn btn-outline-secondary pt-0 pb-0 border-2 rounded-5"><i
                                                 class="fa fa-eye"></i>&nbsp;&nbsp;View</a>
                                     </div>
                                 </div>
@@ -190,7 +193,8 @@ while ($user = $users->fetch_assoc()) {
                                         <div class="d-flex justify-content-start">
                                             <button class="btn btn-primary pt-0 pb-0 rounded-5 me-2"><i
                                                     class="fa fa-plus"></i>&nbsp;&nbsp;Follow</button>
-                                            <a href="/search/result?id=<?php echo $user['id']; ?>" class="btn btn-outline-secondary pt-0 pb-0 border-2 rounded-5"><i
+                                            <a href="/search/result?id=<?php echo $user['id']; ?>"
+                                                class="btn btn-outline-secondary pt-0 pb-0 border-2 rounded-5"><i
                                                     class="fa fa-eye"></i>&nbsp;&nbsp;View</a>
                                         </div>
                                     </div>
@@ -243,5 +247,31 @@ while ($user = $users->fetch_assoc()) {
                 }
             });
         });
+        $('[id^=post-card-]').each(function () {
+            const id = $(this).attr('id').split('-')[2];
+            const post_view = $('#post-card-' + id);
+            const text = post_view.find('#post_desc').text();
+            if (text.length > 200) {
+                const visible = text.substring(0, 200);
+                const data = $(`<p>${visible}<p>`);
+                post_view.find('#post_desc').replaceWith(() => {
+                    return $('<small>', {
+                        id: 'post_desc',
+                        html: data.html(),
+                    });
+                });
+
+                post_view.find('#exco').click(() => {
+                    if (post_view.find('#exco').text() == '...more') {
+                        post_view.find('#exco').text('...less');
+                        post_view.find('#post_desc').html($(`<p>${text}<p>`));
+                    } else {
+                        post_view.find('#exco').text('...more');
+                        post_view.find('#post_desc').html($(`<p>${visible}</p>`));
+                    }
+                });
+            }
+        });
+
     });
 </script>

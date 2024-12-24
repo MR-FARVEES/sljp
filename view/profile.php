@@ -643,7 +643,7 @@
             $('#choose-cover').modal('show');
         });
         $('#change-profile').click(() => {
-            $('#choose-cover').modal('show');
+            $('#choose-profile').modal('show');
         });
         $.ajax({
             url: '/universities',
