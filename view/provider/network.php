@@ -50,6 +50,7 @@
                             $unies = $this->universityModel->getUniversity($education['institude']);
                             while ($uni = $unies->fetch_assoc()) {
                                 $uni_id = $uni['id'];
+                                $uni_name = $uni['name'];
                                 ?>
                                 <h6 class="card-title fw-light">People you may know from
                                     <?php echo $uni['name']; ?>
@@ -63,9 +64,13 @@
                     $educations = $this->educationModel->getUsersByInstitude($uni_id);
                     $row = false;
                     $count = 0;
+                    $i = 0;
                     while ($education = $educations->fetch_assoc()) {
                         $users = $this->userModel->getUserInfo($education['user_id']);
                         while ($user = $users->fetch_assoc()) {
+                            if ($user['id'] == $_SESSION['id']) {
+                                continue;
+                            }
                             if ($row == false) {
                                 $row = true;
                                 ?>
@@ -99,12 +104,20 @@
                                 </div>
                                 <?php
                             }
+                            $i++;
                             $count++;
                             $count = $count % 3;
                         }
                     }
                     if ($row == true) {
                         ?>
+                    </div>
+                    <?php
+                    }
+                    if ($i == 0) {
+                        ?>
+                    <div class="d-flex justify-content-center">
+                        <p class="text-muted pt-5">There is no people using our app from <?php echo $uni_name; ?></p>
                     </div>
                     <?php
                     }

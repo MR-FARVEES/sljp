@@ -35,6 +35,7 @@ class UserModel extends Model
     private $search_query = "SELECT * FROM `user` WHERE (first LIKE ? OR first LIKE ? OR first LIKE ? OR last LIKE ? OR last LIKE ? OR last LIKE ?) AND NOT role = 'admin';";
     private $match_headline = "SELECT * FROM `user` WHERE ";
     private $update_profile = "UPDATE `user` SET profile = ? WHERE id = ?";
+    private $update_cover = "UPDATE `user` SET cover = ? WHERE id = ?";
 
     public function __construct()
     {
@@ -126,5 +127,9 @@ class UserModel extends Model
     public function updateProfile($profile, $id)
     {
         $this->update($this->update_profile, [$profile, $id], "si");
+    }
+
+    public function updateCover($cover, $id) {
+        $this->update($this->update_cover, [$cover, $id], "si");
     }
 }

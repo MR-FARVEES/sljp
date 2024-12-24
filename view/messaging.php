@@ -53,7 +53,7 @@ while ($follower = $followers->fetch_assoc()) {
     while ($user = $users->fetch_assoc()) {
         ?>
         <div id="conversation-<?php echo $user['id']; ?>" class="card d-none position-fixed bottom-0 end-0 zindex-1000"
-            style="margin-right:22rem;min-width:30rem;min-height:60vh;">
+            style="margin-right:22rem;min-width:40rem;min-height:60vh;">
             <div class="card-header w-100 d-flex justify-content-between bg-white">
                 <div class="d-flex">
                     <div class="position-relative">
@@ -176,22 +176,102 @@ while ($follower = $followers->fetch_assoc()) {
                                         if (sdata[idAttr]) {
                                             if (!sdata[idAttr].includes(msg_info[0])) {
                                                 sdata[idAttr].push(msg_info[0]);
+                                                const post_view = $(`
+                                                    <div class="card align-self-start shadow-sm mb-3">
+                                                        <div class="p-3">
+                                                            <div class="d-flex justify-content-between w-100">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img width="40" height="40"
+                                                                        alt="User Image" class="rounded-circle" id="user-profile">
+                                                                    <div class="d-flex align-items-start">
+                                                                        <h1 class="card-title fs-6 fw-bold mb-0 ms-2"><a class="text-decoration-none text-black post-hover" id="user-link"></a></h1>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="post" class="p-2">
+                                                                <input type="hidden" id="temp">
+                                                                <small id="post_desc" class="text-wrap" style="font-size:14px;"></small>
+                                                                <img id="post_source" class="card-img-top mt-2" alt="">                                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `);
                                                 if (msg_info[1] == myId) {
                                                     const profile_pic = $(`
                                                         <img src="/assets/images/user/${$('#profile_image').val()}" class="rounded-circle me-2" width="30" height="30">
                                                         <p>Me</p>
                                                     `);
-                                                    msg_view.append(`<p class="text-muted text-wrap fs-6" style="margin-left:35px;">${msg_info[3]}</p>`);
-                                                    msg_view.find('#profile').append(profile_pic);
-                                                    $('#message-container-' + id).append(msg_view);
+                                                    if (msg_info[5] == "post") {
+                                                        const formData = new FormData();
+                                                        formData.append('post_id', msg_info[3]);
+                                                        $.ajax({
+                                                            url:'/user/repost/data',
+                                                            data:formData,
+                                                            type:'post',
+                                                            contentType:false,
+                                                            processData:false,
+                                                            success:(res) => {
+                                                                const regex = /\[(.*?)\]/g;
+                                                                const matches = res.matchAll(regex);
+                                                                for (const match of matches) {
+                                                                    $.each(match[1].split('<#>'), function (idx, value) {
+                                                                        if (value) {
+                                                                            const post_info = value.split('<>');
+                                                                            post_view.css({
+                                                                                "max-width":"30rem"
+                                                                            });
+                                                                            post_view.find('#user-profile').replaceWith(() => {
+                                                                                return $('<img>', {
+                                                                                    id: "msger-profile",
+                                                                                    src: "/assets/images/user/"+post_info[0],
+                                                                                    width: "30",
+                                                                                    height: "30",
+                                                                                    class: "rounded-circle"
+                                                                                });
+                                                                            });
+                                                                            post_view.find('#user-link').replaceWith(() => {
+                                                                                return $('<a>', {
+                                                                                    id: "user_link",
+                                                                                    href: "/search/result?id="+post_info[5],
+                                                                                    text: post_info[1],
+                                                                                    class: "text-decoration-none text-black post-hover"
+                                                                                });
+                                                                            });
+                                                                            post_view.find('#post_desc').html(post_info[2]);
+                                                                            post_view.find('#post_source').replaceWith(() => {
+                                                                            return $('<img>', {
+                                                                                id: "repost_source",
+                                                                                src: "/assets/images/post/"+post_info[3],
+                                                                                class: "card-img-top mt-2"
+                                                                            });
+                                                                        });
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+                                                        });
+                                                        const ctr = $('<div class="d-flex justify-content-center"></div>');
+                                                        ctr.append(post_view);
+                                                        msg_view.append(ctr);
+                                                        msg_view.find('#profile').append(profile_pic);
+                                                        $('#message-container-' + id).append(msg_view);
+                                                    } else {
+                                                        msg_view.append(`<p class="text-muted text-wrap fs-6" style="margin-left:35px;">${msg_info[3]}</p>`);
+                                                        msg_view.find('#profile').append(profile_pic);
+                                                        $('#message-container-' + id).append(msg_view);
+                                                    }
                                                 } else {
                                                     const profile_pic = $(`
                                                         <img src="/assets/images/user/${msg_info[6]}" class="rounded-circle me-2" width="30" height="30" >
                                                         <p>${msg_info[7]}</p>
                                                     `);
-                                                    msg_view.append(`<p class="text-muted text-wrap fs-6" style="margin-left:35px;">${msg_info[3]}</p>`);
-                                                    msg_view.find('#profile').append(profile_pic);
-                                                    $('#message-container-' + id).append(msg_view);
+                                                    if (msg_info[5] == "post") {
+
+                                                    } else {
+                                                        msg_view.append(`<p class="text-muted text-wrap fs-6" style="margin-left:35px;">${msg_info[3]}</p>`);
+                                                        msg_view.find('#profile').append(profile_pic);
+                                                        $('#message-container-' + id).append(msg_view);
+                                                    }
                                                 }
                                             }
                                         }
