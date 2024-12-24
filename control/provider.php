@@ -121,5 +121,18 @@ class ProviderController extends UserController
             }
         }
     }
+
+    public function updateCompanyCover() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $cover = $_FILES['cover'];
+            $company_id = $_POST['company_id'];
+            $path = $_POST['path'];	
+            $dir = __DIR__ . "/../assets/images/company/";
+            $upload_cover = $dir . "/cover/" . $cover['name'];
+            $this->companyModel->updateCompanyCover($cover['name'], $company_id);
+            move_uploaded_file($cover['tmp_name'], $upload_cover);     
+            $this->redirect($path);   
+        }
+    }
 }
 

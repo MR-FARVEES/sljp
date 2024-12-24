@@ -7,7 +7,7 @@ $comment = "";
         <div class="row g-4">
             <div class="col-12 col-md-3">
                 <div class="card align-self-start shadow-sm mb-3">
-                    <img class="card-img-top" height="100" src="assets/images/cover/<?php echo $_SESSION['cover']; ?>"
+                    <img class="card-img-top" height="100" src="/assets/images/cover/<?php echo $_SESSION['cover']; ?>"
                         alt="Title" />
                     <div
                         style="margin-left:20px;margin-top:-60px;border-radius:60px;width: 120px;height: 120px;background:#fff;padding:4px;">

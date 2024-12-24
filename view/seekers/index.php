@@ -2,7 +2,7 @@
 $post_to = isset($_POST["post_to"]) ? $_POST['post_to'] : 'anyone';
 $comment = "";
 ?>
-<div class="container-fluid mt-5 bg-light">
+<div class="container-fluid mt-5 min-vh-100 bg-light">
     <div class="p-5">
         <div class="row g-4">
             <div class="col-12 col-md-3">
@@ -432,7 +432,7 @@ $comment = "";
                                             </div>
                                             <div id="post" class="p-2">
                                                 <input type="hidden" id="pdata-${post_info[4]}" value="${post_info[2]}">
-                                                <small id="post_desc" class="text-wrap" style="font-size:14px;">${post_info[2]}</small>
+                                                <small id="post_desc" class="text-wrap" style="font-size:14px;">${post_info[2]}</small><span class="text-muted" id="exco">...more</span>
                                                 
                                                 <img src="/assets/images/post/${post_info[3]}" id="post_source" class="card-img-top mt-2" alt="">
                                                 <div id="repost-container">
@@ -458,6 +458,27 @@ $comment = "";
                                         </div>
                                     </div>
                                 `);
+                                const text = post_view.find('#post_desc').text();
+                                if (text.length > 200) {
+                                    const visible = text.substring(0, 200);
+                                    const data = $(`<p>${visible}<p>`);
+                                    post_view.find('#post_desc').replaceWith(() => {
+                                        return $('<small>', {
+                                            id: 'post_desc',
+                                            html: data.html(),
+                                        });
+                                    });
+
+                                    post_view.find('#exco').click(() => {
+                                        if (post_view.find('#exco').text() == '...more') {
+                                            post_view.find('#exco').text('...less');
+                                            post_view.find('#post_desc').html($(`<p>${text}<p>`));
+                                        } else {
+                                            post_view.find('#exco').text('...more');
+                                            post_view.find('#post_desc').html($(`<p>${visible}</p>`));
+                                        } 
+                                    });
+                                }
                                 post_view.find('[id^="like-"]').on('click', (event) => {
                                     const id = $(event.target).attr('id').split('-')[1];
                                     const formData = new FormData();
